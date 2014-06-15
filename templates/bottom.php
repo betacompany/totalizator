@@ -1,5 +1,5 @@
 <div class="container" id="bottom">
-	&copy; <a href="http://grigoriev.me">Артём Григорьев</a>, betacompany, 2010 &mdash; <?=date("Y")?>
+    &copy; <a href="http://grigoriev.me">Артём Григорьев</a>, betacompany, 2010 &mdash; <?= date("Y") ?>
 </div>
 
 <!-- Yandex.Metrika counter -->

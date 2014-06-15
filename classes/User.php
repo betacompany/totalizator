@@ -107,7 +107,7 @@ class User {
                 $data[$i]['user'] = $user;
                 $i++;
             } catch (Exception $e) {
-                
+
             }
         }
 
@@ -117,4 +117,5 @@ class User {
     }
 
 }
+
 ?>

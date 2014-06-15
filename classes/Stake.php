@@ -16,9 +16,9 @@ require_once 'Match.php';
  */
 class Stake {
 
-	const DRAW = "draw";
-	const WIN1 = "win1";
-	const WIN2 = "win2";
+    const DRAW = "draw";
+    const WIN1 = "win1";
+    const WIN2 = "win2";
 
     private $id;
     private $uid;
@@ -75,15 +75,15 @@ class Stake {
         return $this->score;
     }
 
-	public function getType() {
-		if ($this->getScore1() == $this->getScore2()) {
-			return self::DRAW;
-		}
-		if ($this->getScore1() < $this->getScore2()) {
-			return self::WIN2;
-		}
-		return self::WIN1;
-	}
+    public function getType() {
+        if ($this->getScore1() == $this->getScore2()) {
+            return self::DRAW;
+        }
+        if ($this->getScore1() < $this->getScore2()) {
+            return self::WIN2;
+        }
+        return self::WIN1;
+    }
 
     public function edit($uid, $score1, $score2) {
         if ($uid != $this->getUID()) {
@@ -102,8 +102,7 @@ class Stake {
     }
 
     private function setScore($value) {
-        mysql_qw('UPDATE `total_stakes` SET `score`=?, `played`=1 WHERE `id`=?',
-                $value, $this->getId());
+        mysql_qw('UPDATE `total_stakes` SET `score`=?, `played`=1 WHERE `id`=?', $value, $this->getId());
     }
 
     public function finish(Match $match) {
@@ -115,37 +114,32 @@ class Stake {
         $want_score2 = $this->getScore2();
 
         if ($real_score1 == $want_score1 && $real_score2 == $want_score2) {
-			// score guessed
+            // score guessed
             $score = $match->getScoreForTotal();
         } else if ($real_score1 == $real_score2 && $want_score1 == $want_score2) {
-			// draw guessed
+            // draw guessed
             if (abs($real_score1 - $want_score1) <= 1) {
-				// near
+                // near
                 $score = $match->getScoreForDrawNear();
             } else {
-				// far
+                // far
                 $score = $match->getScoreForDrawFar();
             }
         } else if ($real_score1 - $real_score2 == $want_score1 - $want_score2) {
-			// difference guessed
+            // difference guessed
             $score = $match->getScoreForDiff();
-        } else if (
-                ($real_score1 > $real_score2 && $want_score1 > $want_score2) ||
-                ($real_score1 < $real_score2 && $want_score1 < $want_score2)
+        } else if (($real_score1 > $real_score2 && $want_score1 > $want_score2) || ($real_score1 < $real_score2 && $want_score1 < $want_score2)
         ) {
-			// winner guessed
+            // winner guessed
             $score = $match->getScoreForResult();
 
-			// winner goals number guessed
-            if (
-                    ($real_score1 == $want_score1 && $real_score1 > $real_score2)
-                    ||
-                    ($real_score2 == $want_score2 && $real_score2 > $real_score1)
+            // winner goals number guessed
+            if (($real_score1 == $want_score1 && $real_score1 > $real_score2) || ($real_score2 == $want_score2 && $real_score2 > $real_score1)
             ) {
                 $score += 1;
             }
         } else {
-			// nothing guessed
+            // nothing guessed
             $score = $match->getScoreForInvalid();
         }
 
@@ -169,12 +163,7 @@ class Stake {
 		    `stake_score2`=?,
 		    `played`=0,
 		    `score`=0
-		 ',
-                $uid,
-                $match_id,
-                $score1,
-                $score2
-        );
+		 ', $uid, $match_id, $score1, $score2);
 
         return mysql_insert_id();
     }
@@ -260,4 +249,5 @@ class Stake {
     }
 
 }
+
 ?>
