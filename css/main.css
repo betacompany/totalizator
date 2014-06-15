@@ -1,0 +1,45 @@
+
+#matches {
+    background-color: #fff;
+    padding: 2px;
+}
+
+.top_m {
+    padding: 2px 2px 20px 2px;
+}
+
+#matches ul {
+    margin: 0;
+    list-style: none;
+}
+
+#people {
+    background-color: #fff;
+    width: 500px;
+    padding: 0;
+    float: left;
+    margin-top: 5px;
+    margin-left: 30px;
+}
+
+#matches > ul > li {
+    background-color: #ddd;
+    padding: 5px 8px;
+    margin-bottom: 10px;
+}
+
+div.response {
+    margin-top: 10px;
+    display: none;
+}
+
+form {
+    margin: 0 !important;
+}
+
+#bottom {
+    margin-top: 30px;
+    font-size: 0.7em;
+    text-align: center;
+    color: #ccc;
+}
