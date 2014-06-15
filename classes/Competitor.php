@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-require_once './lib/mysql.php';
+require_once dirname(__FILE__) . '/../lib/mysql.php';
 
 /**
  * Description of Competitor

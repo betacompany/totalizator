@@ -1,13 +1,13 @@
 <?php
 
-require_once 'lib/access.php';
+require_once dirname(__FILE__) . '/lib/access.php';
 if (!accessTest() || !(userid() == 1 || userid() == 10 || userid() == 9 || userid() == 60)) {
     echo 'Access denied';
     exit(0);
 }
 
-require_once 'classes/Match.php';
-require_once 'classes/Stake.php';
+require_once dirname(__FILE__) . '/classes/Match.php';
+require_once dirname(__FILE__) . '/classes/Stake.php';
 
 switch ($_REQUEST['action']) {
     case 'add_match':

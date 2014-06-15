@@ -1,14 +1,10 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-require_once 'Competition.php';
-require_once 'Competitor.php';
-require_once 'Stake.php';
+require_once dirname(__FILE__) . '/Competition.php';
+require_once dirname(__FILE__) . '/Competitor.php';
+require_once dirname(__FILE__) . '/Stake.php';
 
-require_once './lib/mysql.php';
+require_once dirname(__FILE__) . '/../lib/mysql.php';
 
 define('AVAILABLE_TIME', 120);
 

@@ -1,12 +1,8 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-require_once 'Match.php';
+require_once dirname(__FILE__) . '/Match.php';
 
-require_once './lib/mysql.php';
+require_once dirname(__FILE__) . '/../lib/mysql.php';
 
 /**
  * Description of Competition

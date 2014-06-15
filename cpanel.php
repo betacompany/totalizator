@@ -1,13 +1,13 @@
 <?php
 
-require_once 'lib/access.php';
+require_once dirname(__FILE__) . '/lib/access.php';
 if (!accessTest() || !(userid() == 1 || userid() == 10 || userid() == 9 || userid() == 60)) {
     echo 'Access denied';
     exit(0);
 }
 
-require_once 'classes/Competition.php';
-require_once 'classes/Competitor.php';
+require_once dirname(__FILE__) . '/classes/Competition.php';
+require_once dirname(__FILE__) . '/classes/Competitor.php';
 
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

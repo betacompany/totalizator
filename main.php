@@ -1,24 +1,24 @@
 <?
 
-require_once 'lib/access.php';
+require_once dirname(__FILE__) . '/lib/access.php';
 
 if (!accessTest()) {
     Header('Location: /index.php?code=69');
     exit(0);
 }
 
-require_once 'classes/Match.php';
-require_once 'classes/Stake.php';
+require_once dirname(__FILE__) . '/classes/Match.php';
+require_once dirname(__FILE__) . '/classes/Stake.php';
 
 ?><!DOCTYPE html>
 <html lang="ru">
 
-<? include 'templates/head.php'; ?>
+<? include dirname(__FILE__) . '/templates/head.php'; ?>
 
 <body>
 
 <div class="container">
-    <? include 'templates/menu.php'; ?>
+    <? include dirname(__FILE__) . '/templates/menu.php'; ?>
 
     <div class="row">
         <div class="span8 offset3">
@@ -65,7 +65,7 @@ require_once 'classes/Stake.php';
     <script type="text/javascript">loadMatches('available');</script>
 </div>
 
-<? require_once "templates/bottom.php"; ?>
+<? include dirname(__FILE__) . '/templates/bottom.php'; ?>
 
 </body>
 </html>

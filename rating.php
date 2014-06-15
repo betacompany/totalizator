@@ -1,17 +1,17 @@
 <?
 
-require_once 'lib/access.php';
+require_once dirname(__FILE__) . '/lib/access.php';
 if (!accessTest()) {
     Header('Location: /index.php?code=69');
     exit(0);
 }
 
-require_once 'classes/User.php';
+require_once dirname(__FILE__) . '/classes/User.php';
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
-<? include 'templates/head.php'; ?>
+<? include dirname(__FILE__) . '/templates/head.php'; ?>
 
 <body>
 
@@ -48,7 +48,7 @@ require_once 'classes/User.php';
     </div>
 </div>
 
-<? require_once "templates/bottom.php"; ?>
+<? include dirname(__FILE__) . '/templates/bottom.php'; ?>
 
 </body>
 </html>

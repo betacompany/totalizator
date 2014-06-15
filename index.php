@@ -1,6 +1,6 @@
 <?
 
-require_once 'lib/access.php';
+require_once dirname(__FILE__) . '/lib/access.php';
 
 if (accessTest()) {
     Header('Location: /main.php');
@@ -10,12 +10,12 @@ if (accessTest()) {
 ?><!DOCTYPE html>
 <html lang="ru">
 
-<? include 'templates/head.php'; ?>
+<? include dirname(__FILE__) . '/templates/head.php'; ?>
 
 <body>
 
 <div class="container">
-    <? include 'templates/menu.php'; ?>
+    <? include dirname(__FILE__) . '/templates/menu.php'; ?>
 
     <div class="span6 offset3">
         <div class="hero-unit">
@@ -52,7 +52,7 @@ if (accessTest()) {
     </div>
 </div>
 
-<? require_once "templates/bottom.php"; ?>
+<? include dirname(__FILE__) . '/templates/bottom.php'; ?>
 
 </body>
 </html>

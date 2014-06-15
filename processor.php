@@ -1,15 +1,15 @@
 <?php
 
-require_once 'lib/access.php';
+require_once dirname(__FILE__) . '/lib/access.php';
 if (!accessTest()) {
     echo '<error>access violation</error>';
     exit(0);
 }
 
-require_once 'classes/Match.php';
-require_once 'classes/Stake.php';
-require_once 'classes/User.php';
-require_once 'templates/templates.php';
+require_once dirname(__FILE__) . '/classes/Match.php';
+require_once dirname(__FILE__) . '/classes/Stake.php';
+require_once dirname(__FILE__) . '/classes/User.php';
+require_once dirname(__FILE__) . '/templates/templates.php';
 
 switch ($_REQUEST['action']) {
     case 'make_stake':
