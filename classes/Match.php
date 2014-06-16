@@ -213,9 +213,9 @@ class Match {
         return $data;
     }
 
-    public static function getPlayed() {
+    public static function getPlayed($limit) {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `timestamp` DESC, `id` ASC LIMIT 20');
+        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `timestamp` DESC, `id` ASC LIMIT ' . $limit);
         while ($match = mysql_fetch_assoc($req)) {
             try {
                 $data[] = new Match($match['id']);

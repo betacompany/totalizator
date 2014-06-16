@@ -75,7 +75,7 @@ switch ($_REQUEST['action']) {
                 $matches = Match::getActive();
                 break;
             case 'played':
-                $matches = Match::getPlayed();
+                $matches = Match::getPlayed(20);
                 break;
         }
 

@@ -27,6 +27,19 @@ switch ($_REQUEST['action']) {
             echo $e->getMessage();
         }
         break;
+
+    case 'recalc_match':
+        try {
+            $match = new Match($_REQUEST['match_id']);
+            $stakes = $match->getStakes();
+            foreach ($stakes as $stake) {
+                $stake->finish($match);
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        break;
+
     case 'import_stakes':
         try {
             $file = $_FILES['stakes_file'];
