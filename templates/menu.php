@@ -51,7 +51,7 @@ $menu[3]['title'] = 'Правила';
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <strong>Внимание!</strong>
     Правила <a href="/rules.php" class="alert-link">изменились</a>
-    и будут применены ко всем матчам, начиная с матча "Уругвай vs Коста Рика".
+    и были применены ко всем матчам, начиная с матча "Уругвай vs Коста Рика".
     Извините, что мы вас так разыграли :(
 </div>
 
