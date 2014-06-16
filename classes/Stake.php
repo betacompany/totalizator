@@ -134,7 +134,8 @@ class Stake {
                 // almost guessed convincing/confident (?) victory
                 $score = 2;
             }
-        } else if (gmp_sign($real_score1 - $real_score2) == gmp_sign($want_score1 - $want_score2)) {
+        } else if (($real_score1 > $real_score2 && $want_score1 > $want_score2)
+                || ($real_score1 < $real_score2 && $want_score1 < $want_score2)) {
             //winner guessed
             $score = 1;
         } else {
