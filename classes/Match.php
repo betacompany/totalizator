@@ -145,30 +145,6 @@ class Match {
         return Stake::getByMatchId($this->getId());
     }
 
-    public function getScoreForTotal() {
-        return 4;
-    }
-
-    public function getScoreForDiff() {
-        return 2;
-    }
-
-    public function getScoreForDrawNear() {
-        return 2;
-    }
-
-    public function getScoreForDrawFar() {
-        return 1;
-    }
-
-    public function getScoreForResult() {
-        return 1;
-    }
-
-    public function getScoreForInvalid() {
-        return 0;
-    }
-
     public function finish($score1, $score2) {
         mysql_qw('UPDATE `total_matches` SET `score1`=?, `score2`=?, `played`=1 WHERE `id`=?', $score1, $score2, $this->getId());
         $this->score1 = $score1;
