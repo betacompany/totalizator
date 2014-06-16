@@ -43,3 +43,12 @@ form {
     text-align: center;
     color: #ccc;
 }
+
+/* as in bootstrap 3.1.1 */
+.alert-danger .alert-link {
+	color: #843534;
+}
+
+.alert .alert-link {
+	font-weight: 700;
+}
