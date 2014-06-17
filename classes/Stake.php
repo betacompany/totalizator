@@ -101,8 +101,6 @@ class Stake {
     }
 
     public function finish(Match $match) {
-        $score = 0;
-
         $real_score1 = $match->getScore1();
         $real_score2 = $match->getScore2();
         $want_score1 = $this->getScore1();
@@ -110,32 +108,39 @@ class Stake {
 
         if ($real_score1 == $want_score1 && $real_score2 == $want_score2) {
             // score guessed
-            $score = $match->getScoreForTotal();
-        } else if ($real_score1 == $real_score2 && $want_score1 == $want_score2) {
-            // draw guessed
-            if (abs($real_score1 - $want_score1) <= 1) {
-                // near
-                $score = $match->getScoreForDrawNear();
-            } else {
-                // far
-                $score = $match->getScoreForDrawFar();
-            }
+            $score = 4;
         } else if ($real_score1 - $real_score2 == $want_score1 - $want_score2) {
             // difference guessed
-            $score = $match->getScoreForDiff();
-        } else if (($real_score1 > $real_score2 && $want_score1 > $want_score2) || ($real_score1 < $real_score2 && $want_score1 < $want_score2)
-        ) {
-            // winner guessed
-            $score = $match->getScoreForResult();
-
-            // winner goals number guessed
-            if (($real_score1 == $want_score1 && $real_score1 > $real_score2) || ($real_score2 == $want_score2 && $real_score2 > $real_score1)
-            ) {
-                $score += 1;
+            if (abs($real_score1 - $want_score1) <= 1) {
+                // near
+                $score = 2;
+            } else {
+                // far
+                $score = 1;
             }
+        } else if ($real_score1 - $real_score2 >= 2
+                && $want_score1 - $want_score2 >= 2
+                && ($real_score1 == $want_score1 && abs($real_score2 - $want_score2) <= 1
+                    || $real_score2 == $want_score2 && abs($real_score1 - $want_score1) <= 1)
+        ) {
+            if ($real_score1 - $real_score2 >= 3 &&
+                $want_score1 - $want_score2 >= 3 &&
+                max($real_score1, $real_score2) >=4 &&
+                max($want_score1, $want_score2) >=4
+            ) {
+                // almost guessed completely crushing victory
+                $score = 3;
+            } else {
+                // almost guessed convincing/confident (?) victory
+                $score = 2;
+            }
+        } else if (($real_score1 > $real_score2 && $want_score1 > $want_score2)
+                || ($real_score1 < $real_score2 && $want_score1 < $want_score2)) {
+            //winner guessed
+            $score = 1;
         } else {
             // nothing guessed
-            $score = $match->getScoreForInvalid();
+            $score = 0;
         }
 
         $this->setScore($score);

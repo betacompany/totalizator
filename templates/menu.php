@@ -47,3 +47,11 @@ $menu[3]['title'] = 'Правила';
         </div>
     </div>
 </div>
+<div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Внимание!</strong>
+    Правила <a href="/rules.php" class="alert-link">изменились</a>
+    и были применены ко всем матчам, начиная с матча "Уругвай vs Коста Рика".
+    Извините, что мы вас так разыграли :(
+</div>
+

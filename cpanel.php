@@ -77,7 +77,7 @@ require_once dirname(__FILE__) . '/classes/Competitor.php';
         <?
         $matches = Match::getActive();
         foreach ($matches as $match) {
-            ?>
+        ?>
             <option value="<?= $match->getId() ?>"><?= $match->getName() ?></option>
         <?
         }
@@ -88,6 +88,25 @@ require_once dirname(__FILE__) . '/classes/Competitor.php';
     <br/>
 
     <input type="submit" value="Завершить">
+</form>
+
+<h1>Пересчитать матч</h1>
+
+<form id="recalc_match" action="/cpanel_proc.php">
+    <input type="hidden" name="action" value="recalc_match"/>
+
+    <select name="match_id">
+        <?
+        $matches = Match::getPlayed(100);
+        foreach ($matches as $match) {
+        ?>
+            <option value="<?= $match->getId() ?>"><?= $match->getName() ?></option>
+        <?
+        }
+        ?>
+    </select> <br/>
+
+    <input type="submit" value="Пересчитать">
 </form>
 
 <h1>Импортировать ставки</h1>
