@@ -118,13 +118,13 @@ class Stake {
                 // far
                 $score = 1;
             }
-        } else if ($real_score1 - $real_score2 >= 2
-                && $want_score1 - $want_score2 >= 2
+        } else if (abs($real_score1 - $real_score2) >= 2
+                && abs($want_score1 - $want_score2) >= 2
                 && ($real_score1 == $want_score1 && abs($real_score2 - $want_score2) <= 1
                     || $real_score2 == $want_score2 && abs($real_score1 - $want_score1) <= 1)
         ) {
-            if ($real_score1 - $real_score2 >= 3 &&
-                $want_score1 - $want_score2 >= 3 &&
+            if (abs($real_score1 - $real_score2) >= 3 &&
+                abs($want_score1 - $want_score2) >= 3 &&
                 max($real_score1, $real_score2) >=4 &&
                 max($want_score1, $want_score2) >=4
             ) {
