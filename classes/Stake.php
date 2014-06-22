@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/Match.php';
+require_once dirname(__FILE__) . '/StakeCalculator.php';
 
 require_once dirname(__FILE__) . '/../lib/mysql.php';
 
@@ -101,49 +102,12 @@ class Stake {
     }
 
     public function finish(Match $match) {
-        $real_score1 = $match->getScore1();
-        $real_score2 = $match->getScore2();
-        $want_score1 = $this->getScore1();
-        $want_score2 = $this->getScore2();
-
-        if ($real_score1 == $want_score1 && $real_score2 == $want_score2) {
-            // score guessed
-            $score = 4;
-        } else if ($real_score1 - $real_score2 == $want_score1 - $want_score2) {
-            // difference guessed
-            if (abs($real_score1 - $want_score1) <= 1) {
-                // near
-                $score = 2;
-            } else {
-                // far
-                $score = 1;
-            }
-        } else if (abs($real_score1 - $real_score2) >= 2
-                && abs($want_score1 - $want_score2) >= 2
-                && ($real_score1 == $want_score1 && abs($real_score2 - $want_score2) <= 1
-                    || $real_score2 == $want_score2 && abs($real_score1 - $want_score1) <= 1)
-        ) {
-            if (abs($real_score1 - $real_score2) >= 3 &&
-                abs($want_score1 - $want_score2) >= 3 &&
-                max($real_score1, $real_score2) >=4 &&
-                max($want_score1, $want_score2) >=4
-            ) {
-                // almost guessed completely crushing victory
-                $score = 3;
-            } else {
-                // almost guessed convincing/confident (?) victory
-                $score = 2;
-            }
-        } else if (($real_score1 > $real_score2 && $want_score1 > $want_score2)
-                || ($real_score1 < $real_score2 && $want_score1 < $want_score2)) {
-            //winner guessed
-            $score = 1;
-        } else {
-            // nothing guessed
-            $score = 0;
-        }
-
-        $this->setScore($score);
+        $this->setScore(StakeCalculator::calculateScore(
+            $match->getScore1(),
+            $match->getScore2(),
+            $this->getScore1(),
+            $this->getScore2()
+        ));
     }
 
     public static function make($uid, $match_id, $score1, $score2, $force = false) {
