@@ -10,6 +10,7 @@ class StakeCalculatorTest extends PHPUnit_Framework_TestCase {
         $this->check(2, 0, 2, 0, 4);
         $this->check(2, 1, 1, 0, 2);
         $this->check(4, 1, 4, 0, 3);
+        $this->check(3, 0, 4, 0, 2);
         // todo ...
     }
 
