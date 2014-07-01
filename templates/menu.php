@@ -47,3 +47,9 @@ $menu[3]['title'] = 'Правила';
         </div>
     </div>
 </div>
+<div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Внимание!</strong>
+    Мы опять коварно изменили правила: теперь всегда ставим на 90 минут,
+    даже в случае дополнительного времени!
+</div>
