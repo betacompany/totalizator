@@ -130,6 +130,7 @@ class User {
         }
 
         uasort($data, 'compare_by_score_then_by_valued_guesses');
+        rsort($data);
         print_r("\n after: ");
         print_r($data);
 
