@@ -121,6 +121,7 @@ class User {
 
                 $data[$i]['scores'] = $scores;
                 $data[$i]['point_stats'] = $guesses_by_points;
+                $data[$i]['outcomes'] = $user->getGuessedOutcomes($comp_id);
                 $data[$i]['user'] = $user;
                 $i++;
             } catch (Exception $e) {
@@ -128,16 +129,16 @@ class User {
             }
         }
 
-        print_r("before: ");
-        print_r($data);
-        uasort($data, 'cmp');
+        uasort($data, 'compare_by_score_then_by_valued_guesses');
         print_r("\n after: ");
         print_r($data);
 
         return $data;
     }
 
-    function cmp($a, $b) {
+    function compare_by_score_then_by_valued_guesses($a, $b) {
+        if ($a['scores'] > $b['scores']) return 1;
+        elseif ($a['scores'] < $b['scores']) return -1;
         for ($i = 4; $i >= 1; $i--) {
             if ($a['point_stats'][$i] > $b['point_stats'][$i]) return 1;
             elseif ($a['point_stats'][$i] < $b['point_stats'][$i]) return -1;
