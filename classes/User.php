@@ -111,7 +111,9 @@ class User {
             }
         }
 
+        print_r($data);
         rsort($data);
+        print_r($data);
 
         return $data;
     }
