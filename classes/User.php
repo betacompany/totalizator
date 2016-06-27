@@ -66,7 +66,7 @@ class User {
         return $sum;
     }
 
-    public function getGuessed($comp_id = 0) {
+    public function getGuessedOutcomes($comp_id = 0) {
         if ($comp_id != 0) {
             $req = mysql_qw('SELECT COUNT(*) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? and `comp_id`=? and `total_stakes`.`score`>0', $this->getId(), $comp_id);
             return mysql_result($req, 0, 'scores');
@@ -74,7 +74,21 @@ class User {
 
         $sum = 0;
         foreach (Competition::getAll() as $competition) {
-            $sum += intval($this->getGuessed($competition->getId()));
+            $sum += intval($this->getGuessedOutcomes($competition->getId()));
+        }
+
+        return $sum;
+    }
+
+    public function getGuessesByPoits($comp_id = 0, $points) {
+        if ($comp_id != 0) {
+            $req = mysql_qw('SELECT COUNT(*) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? and `comp_id`=? and `total_stakes`.`score`=?', $this->getId(), $comp_id, $points);
+            return mysql_result($req, 0, 'scores');
+        }
+
+        $sum = 0;
+        foreach (Competition::getAll() as $competition) {
+            $sum += intval($this->getGuessesByPoits($competition->getId()));
         }
 
         return $sum;
@@ -100,10 +114,14 @@ class User {
             try {
                 $user = new User($u['uid']);
                 $scores = $user->getScores($comp_id);
-                $guessed = $user->getGuessed($comp_id);
+                $guesses_by_points = array();
+                $guesses_by_points[1] = $user->getGuessedOutcomes($comp_id);
+                for ($j = 1; $j <= 4; $j++) {
+                    $guesses_by_points[$j] = $user->getGuessesByPoits($comp_id, $j);
+                }
 
                 $data[$i]['scores'] = $scores;
-                $data[$i]['guessed'] = $guessed;
+                $data[$i]['point_stats'] = $guesses_by_points;
                 $data[$i]['user'] = $user;
                 $i++;
             } catch (Exception $e) {
@@ -111,13 +129,21 @@ class User {
             }
         }
 
-        print_r("before: ");    
+        print_r("before: ");
         print_r($data);
-        rsort($data);
+        uasort($data, 'cmp');
         print_r("\n after: ");
         print_r($data);
 
         return $data;
+    }
+
+    function cmp($a, $b) {
+        for ($i = 4; $i >= 1; $i--) {
+            if ($a[$i] > $b[$i]) return 1;
+            elseif ($a[$i] < $b[$i]) return -1;
+        }
+        return 0;
     }
 
 }
