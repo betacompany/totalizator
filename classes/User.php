@@ -111,8 +111,10 @@ class User {
             }
         }
 
+        print_r("before: ");    
         print_r($data);
         rsort($data);
+        print_r("\n after: ");
         print_r($data);
 
         return $data;
