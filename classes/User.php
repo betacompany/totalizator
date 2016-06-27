@@ -80,7 +80,7 @@ class User {
         return $sum;
     }
 
-    public function getGuessesByPoits($comp_id = 0, $points) {
+    public function getGuessesByPoints($comp_id = 0, $points) {
         if ($comp_id != 0) {
             $req = mysql_qw('SELECT COUNT(*) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? and `comp_id`=? and `total_stakes`.`score`=?', $this->getId(), $comp_id, $points);
             return mysql_result($req, 0, 'scores');
@@ -88,7 +88,7 @@ class User {
 
         $sum = 0;
         foreach (Competition::getAll() as $competition) {
-            $sum += intval($this->getGuessesByPoits($competition->getId()));
+            $sum += intval($this->getGuessesByPoints($competition->getId()));
         }
 
         return $sum;
@@ -115,9 +115,8 @@ class User {
                 $user = new User($u['uid']);
                 $scores = $user->getScores($comp_id);
                 $guesses_by_points = array();
-                $guesses_by_points[1] = $user->getGuessedOutcomes($comp_id);
                 for ($j = 1; $j <= 4; $j++) {
-                    $guesses_by_points[$j] = $user->getGuessesByPoits($comp_id, $j);
+                    $guesses_by_points[$j] = $user->getGuessesByPoints($comp_id, $j);
                 }
 
                 $data[$i]['scores'] = $scores;
@@ -140,8 +139,8 @@ class User {
 
     function cmp($a, $b) {
         for ($i = 4; $i >= 1; $i--) {
-            if ($a[$i] > $b[$i]) return 1;
-            elseif ($a[$i] < $b[$i]) return -1;
+            if ($a['point_stats'][$i] > $b['point_stats'][$i]) return 1;
+            elseif ($a['point_stats'][$i] < $b['point_stats'][$i]) return -1;
         }
         return 0;
     }
