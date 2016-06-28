@@ -122,7 +122,7 @@ class User {
                 $data[$i]['scores'] = $scores;
                 $data[$i]['point_stats'] = $guesses_by_points;
                 $data[$i]['outcomes'] = $user->getGuessedOutcomes($comp_id);
-                $data[$i]['user'] = $user;
+//                $data[$i]['user'] = $user;
                 $i++;
             } catch (Exception $e) {
 
@@ -131,7 +131,7 @@ class User {
 
         print_r($data);
 
-        print_r(uasort($data, 'compare_by_score_then_by_valued_guesses'));
+        print_r(usort($data, 'compare_by_score_then_by_valued_guesses'));
         return $data;
     }
 
