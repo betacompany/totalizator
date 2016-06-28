@@ -130,14 +130,24 @@ class User {
         }
 
         uasort($data, 'compare_by_score_then_by_valued_guesses');
-        rsort($data);
-        print_r("\n after: ");
-        print_r($data);
-
         return $data;
     }
 
     function compare_by_score_then_by_valued_guesses($a, $b) {
+        print_r("comparing a: ");
+        print_r($a);
+        print_r(" with b: ");
+        print_r($b);
+        print_r("a.scores");
+        print_r($a['scores']);
+        print_r("b.scores");
+        print_r($b['scores']);
+
+        print_r("a.point_stats");
+        print_r($a['point_stats']);
+        print_r("b.point_stats");
+        print_r($b['point_stats']);
+
         if ($a['scores'] > $b['scores']) return 1;
         elseif ($a['scores'] < $b['scores']) return -1;
         for ($i = 4; $i >= 1; $i--) {
