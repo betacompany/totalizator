@@ -134,7 +134,7 @@ class User
                             $data[$i - 1]['sort_info'] = "больше угаданных ставок по $category $pts: $prev_value против $value";
                             break;
                         } else {
-                            $data[$i - 1]['sort_info'] = "соперники абсолютно равны";
+                            $data[$i - 1]['sort_info'] = "EQUAL";
                         }
                     }
                 }

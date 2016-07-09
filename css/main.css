@@ -43,3 +43,7 @@ form {
     text-align: center;
     color: #ccc;
 }
+
+ol li.skipped {
+    list-style: none;
+}

@@ -118,14 +118,14 @@ switch ($_REQUEST['action']) {
         foreach ($users as $user) {
             $cur_uid = $user['user']->getId();
             ?>
-            <li>
+            <li class="<?= $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>">
                 <? if ($cur_uid == userid()) { ?><strong><? } ?>
                     <a href="#"
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
-                <? if ($user['sort_info'] != ""): ?>
-                    <div class="alert alert-info"><?= $user['sort_info'] ?></div>
+                <? if ($user['sort_info'] != "EQUAL" || $user['sort_info'] != ""): ?>
+                    <p class="sort_info"> <?= $user['sort_info'] ?> </p>
                 <? endif; ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
             </li>
