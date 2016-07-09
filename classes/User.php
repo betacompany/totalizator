@@ -89,11 +89,6 @@ class User
         return $sum;
     }
 
-    public static function descTable() {
-        $req = mysql_qw('DESCRIBE total_stakes');
-        return mysql_result($req, 0);
-    }
-
     public static function getGuessesOrdered($comp_id = 0)
     {
         if ($comp_id != 0) {
@@ -150,10 +145,9 @@ class User
 
             }
         }
-        print User::descTable();
-//        $guesses_sorted = User::getGuessesOrdered($comp_id);
+        $guesses_sorted = User::getGuessesOrdered($comp_id);
 //        $data[$i]['point_stats'] = $guesses_sorted;
-//        print_r($data);
+        print_r($guesses_sorted);
         return $data;
     }
 
