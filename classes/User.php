@@ -162,7 +162,7 @@ class User
 
         $q = mysql_query('SELECT DISTINCT(`total_stakes`.`uid`) FROM
                 (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-                WHERE 1=1');
+                WHERE `total_matches`.`comp_id`=?', $comp_id);
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
                 print "$name: $value\t";
