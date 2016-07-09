@@ -115,19 +115,21 @@ switch ($_REQUEST['action']) {
 
     case 'load_rating':
         $users = User::getAllByRating($_REQUEST['comp_id']);
+        $next_li_class = "";
         foreach ($users as $user) {
             $cur_uid = $user['user']->getId();
             ?>
-            <li class="<?= $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>">
+            <li class="<?= $next_li_class ?>">
                 <? if ($cur_uid == userid()) { ?><strong><? } ?>
                     <a href="#"
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
-                <? if ($user['sort_info'] != "" || $user['sort_info'] != "EQUAL") {
-                    echo '<p class="sort_info">' . $user['sort_info'] . '</p>';
-                } ?>
+                <!--                --><?// if ($user['sort_info']) {
+                echo '<p class="sort_info">' . $user['sort_info'] . '</p>';
+                //                } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
+                <? $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>
             </li>
             <?
         }
