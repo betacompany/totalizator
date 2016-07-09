@@ -161,8 +161,8 @@ class User
           GROUP BY uid
           ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
         while ($row = mysql_fetch_assoc($q)) {
-            $user = new User($row['uid']);
-            print "$user->name $user->surname\t";
+//            $user = new User($row['uid']);
+//            print "$user->name $user->surname\t";
             foreach ($row as $name => $value) {
                 print "$name: $value\t";
             }
