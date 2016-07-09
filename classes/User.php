@@ -164,12 +164,14 @@ class User
             $q = mysql_qw('SELECT `total_stakes`.`uid`,
               SUM(`total_stakes`.`score`) AS points
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-              WHERE 1=1');
+              WHERE 1=1
+              GROUP BY uid');
         } else {
             $q = mysql_qw('SELECT `total_stakes`.`uid`,
               SUM(`total_stakes`.`score`) AS points
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-              WHERE `total_matches`.`comp_id`=?', $comp_id);
+              WHERE `total_matches`.`comp_id`=?
+              GROUP BY uid', $comp_id);
         }
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
