@@ -169,7 +169,8 @@ class User
               SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
               WHERE 1=1
-              GROUP BY uid');
+              GROUP BY uid
+              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC');
         } else {
             $q = mysql_qw('SELECT `total_stakes`.`uid`,
               SUM(`total_stakes`.`score`) AS points,
@@ -179,7 +180,8 @@ class User
               SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
               WHERE `total_matches`.`comp_id`=?
-              GROUP BY uid', $comp_id);
+              GROUP BY uid
+              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
         }
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
