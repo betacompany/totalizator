@@ -15,13 +15,15 @@ require_once dirname(__FILE__) . '/Competition.php';
  *
  * @author ortemij
  */
-class User {
+class User
+{
 
     private $id;
     private $name;
     private $surname;
 
-    public function __construct($id) {
+    public function __construct($id)
+    {
         $user = CommonAuth::getData($id);
         if ($user) {
             $this->id = $user['id'];
@@ -32,29 +34,35 @@ class User {
         }
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function getSurname() {
+    public function getSurname()
+    {
         return $this->surname;
     }
 
-    public function getSN() {
+    public function getSN()
+    {
         return $this->name . ' ' . $this->surname;
     }
 
-    public function getSNnbsp() {
+    public function getSNnbsp()
+    {
         return $this->name . '&nbsp;' . $this->surname;
     }
 
-    public function getScores($comp_id = 0) {
+    public function getScores($comp_id = 0)
+    {
         if ($comp_id != 0) {
-            $req = mysql_qw('SELECT SUM(`score`) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? and `comp_id`=?', $this->getId(), $comp_id);
+            $req = mysql_qw('SELECT SUM(`score`) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? AND `comp_id`=?', $this->getId(), $comp_id);
             return mysql_result($req, 0, 'scores');
         }
 
@@ -66,9 +74,10 @@ class User {
         return $sum;
     }
 
-    public function getGuessedOutcomes($comp_id = 0) {
+    public function getGuessedOutcomes($comp_id = 0)
+    {
         if ($comp_id != 0) {
-            $req = mysql_qw('SELECT COUNT(*) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? and `comp_id`=? and `total_stakes`.`score`>0', $this->getId(), $comp_id);
+            $req = mysql_qw('SELECT COUNT(*) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? AND `comp_id`=? AND `total_stakes`.`score`>0', $this->getId(), $comp_id);
             return mysql_result($req, 0, 'scores');
         }
 
@@ -80,25 +89,36 @@ class User {
         return $sum;
     }
 
-    public function getGuessesByPoints($comp_id = 0, $points) {
+    public function getGuessesOrdered($comp_id = 0, $points)
+    {
         if ($comp_id != 0) {
-            $req = mysql_qw('SELECT COUNT(*) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? and `comp_id`=? and `total_stakes`.`score`=?', $this->getId(), $comp_id, $points);
+            $req = mysql_qw('SELECT COUNT(*) AS `scores`, SUM(`total_stakes`.`score`) AS points,
+              SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
+              SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
+              SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
+              SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
+              FROM `total_stakes`
+              INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`
+              WHERE `uid`=? AND `comp_id`=?
+              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $this->getId(), $comp_id);
             return mysql_result($req, 0, 'scores');
         }
 
         $sum = 0;
         foreach (Competition::getAll() as $competition) {
-            $sum += intval($this->getGuessesByPoints($competition->getId(), $points));
+            $sum += intval($this->getGuessesOrdered($competition->getId(), $points));
         }
 
         return $sum;
     }
 
-    public function getPlayedStakes($compId = 0) {
+    public function getPlayedStakes($compId = 0)
+    {
         return Stake::getPlayedFor($this->getId(), $compId);
     }
 
-    public static function getAllByRating($comp_id = 0) {
+    public static function getAllByRating($comp_id = 0)
+    {
         $data = array();
         $i = 0;
         if ($comp_id == 0) {
@@ -114,13 +134,10 @@ class User {
             try {
                 $user = new User($u['uid']);
                 $scores = $user->getScores($comp_id);
-                $guesses_by_points = array();
-                for ($j = 1; $j <= 4; $j++) {
-                    $guesses_by_points[$j] = $user->getGuessesByPoints($comp_id, $j);
-                }
+                $guesses_sorted = $user->getGuessesOrdered($comp_id, $j);
 
                 $data[$i]['scores'] = $scores;
-                $data[$i]['point_stats'] = $guesses_by_points;
+                $data[$i]['point_stats'] = $guesses_sorted;
                 $data[$i]['outcomes'] = $user->getGuessedOutcomes($comp_id);
                 $data[$i]['user'] = $user;
                 $i++;
@@ -128,14 +145,12 @@ class User {
 
             }
         }
-
         print_r($data);
-
-        usort($data, 'compare_by_score_then_by_valued_guesses');
         return $data;
     }
 
-    function compare_by_score_then_by_valued_guesses($a, $b) {
+    function compare_by_score_then_by_valued_guesses($a, $b)
+    {
         if ($a['scores'] > $b['scores']) return 1;
         elseif ($a['scores'] < $b['scores']) return -1;
         for ($i = 4; $i >= 1; $i--) {
