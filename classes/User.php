@@ -161,7 +161,6 @@ class User
               ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC';
 
         $q = mysql_query('SELECT `total_stakes`.`uid` AS uid,
-          `total_matches`.`comp_id` as comp_id,
           SUM(`total_stakes`.`score`) AS points,
           SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
           SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
@@ -169,9 +168,9 @@ class User
           SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
           FROM `total_stakes`
           INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`
-//          WHERE `total_matches`.`comp_id`=?
+          WHERE `total_matches`.`comp_id`=?
           GROUP BY uid
-          ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC');
+          ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', 10);
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
                 print "$name: $value\t";
