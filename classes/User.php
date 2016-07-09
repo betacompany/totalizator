@@ -176,12 +176,20 @@ class User
         while ($row = mysql_fetch_assoc($q)) {
             try {
                 $user = new User($row['uid']);
+
+                print "$user->name $user->surname\t";
+                foreach ($row as $name => $value) {
+                    print "$name: $value\t";
+                }
+
                 $data[$i]['user'] = $user;
                 $data[$i]['scores'] = $row['scores'];
                 $i++;
             } catch (Exception $e) {
             }
+            print "data: $data";
         }
+        print "$data";
         return $data;
     }
 
