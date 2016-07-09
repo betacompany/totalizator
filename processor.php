@@ -24,7 +24,8 @@ switch ($_REQUEST['action']) {
         break;
 
     case 'get_stakes':
-        function out($title, $stakes) {
+        function out($title, $stakes)
+        {
             echo '<div class="span4">';
             $count = count($stakes);
             echo "<h6>$title ($count)</h6>";
@@ -36,7 +37,8 @@ switch ($_REQUEST['action']) {
             echo '</ul></div>';
         }
 
-        function filter($all, $type) {
+        function filter($all, $type)
+        {
             $result = array();
             foreach ($all as $item) {
                 if ($item->getType() == $type) {
@@ -92,7 +94,7 @@ switch ($_REQUEST['action']) {
             <? if ($_REQUEST['type'] == 'played'): ?>
                 <div class="alert alert-info">И ещё много-много матчей...</div>
             <? endif; ?>
-        <?
+            <?
         } else {
             echo '<div class="alert alert-info">Матчей нет</div>';
         }
@@ -121,10 +123,11 @@ switch ($_REQUEST['action']) {
                     <a href="#"
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
-                (<?= $user['scores'] ?>) (<?= $user['sort_info'] ?>)
+                (<?= $user['scores'] ?>)
+                <? if ($user['sort_info'] != "") { ?> (<?= $user['sort_info'] ?>) <? } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
             </li>
-        <?
+            <?
         }
         break;
 }

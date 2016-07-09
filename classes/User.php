@@ -120,7 +120,7 @@ class User
                 $data[$i]['scores'] = $row['scores'];
                 $data[$i]['sort_info'] = "";
                 $this_scores = array(
-                    "score" => $row['count4'],
+                    "score" => $row['scores'],
                     "4" => $row['count4'],
                     "3" => $row['count3'],
                     "2" => $row['count2'],
