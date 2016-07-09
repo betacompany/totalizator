@@ -121,7 +121,7 @@ switch ($_REQUEST['action']) {
                     <a href="#"
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
-                (<?= $user['scores'] ?>)
+                (<?= $user['scores'] ?>) (<?= $user['sort_info'] ?>)
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
             </li>
         <?
