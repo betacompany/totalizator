@@ -161,6 +161,7 @@ class User
               ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC';
 
         $q = mysql_query('SELECT `total_stakes`.`uid` AS uid,
+          `total_stakes`.`comp_id` AS comp,
           SUM(`total_stakes`.`score`) AS points,
           SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
           SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
