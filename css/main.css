@@ -49,7 +49,7 @@ ol li.skipped {
 }
 
 span.sort_info_arrows {
-    padding-left: 45px;
+    padding-left: 10px;
     color: rgba(128, 128, 128, 0.63);
     font-size: 16px;
     vertical-align: bottom;
