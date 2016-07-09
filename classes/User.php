@@ -148,6 +148,17 @@ class User
         }
         $guesses_sorted = User::getGuessesOrdered($comp_id);
 //        $data[$i]['point_stats'] = $guesses_sorted;
+        $qw = 'SELECT `total_stakes`.`uid` AS uid,
+              SUM(`total_stakes`.`score`) AS points,
+              SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
+              SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
+              SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
+              SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
+              FROM `total_stakes`
+              INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`
+              WHERE `comp_id`=?
+              GROUP BY uid
+              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC';
 
         $q = mysql_query('SELECT `total_stakes`.`uid` AS uid,
           SUM(`total_stakes`.`score`) AS points,
@@ -157,12 +168,9 @@ class User
           SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
           FROM `total_stakes`
           INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`
-//          WHERE `comp_id`=?
           GROUP BY uid
           ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC');
         while ($row = mysql_fetch_assoc($q)) {
-//            $user = new User($row['uid']);
-//            print "$user->name $user->surname\t";
             foreach ($row as $name => $value) {
                 print "$name: $value\t";
             }
