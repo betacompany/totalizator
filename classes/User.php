@@ -162,13 +162,21 @@ class User
 
         if ($comp_id == 0) {
             $q = mysql_qw('SELECT `total_stakes`.`uid`,
-              SUM(`total_stakes`.`score`) AS points
+              SUM(`total_stakes`.`score`) AS points,
+              SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
+              SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
+              SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
+              SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
               WHERE 1=1
               GROUP BY uid');
         } else {
             $q = mysql_qw('SELECT `total_stakes`.`uid`,
-              SUM(`total_stakes`.`score`) AS points
+              SUM(`total_stakes`.`score`) AS points,
+              SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
+              SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
+              SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
+              SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
               WHERE `total_matches`.`comp_id`=?
               GROUP BY uid', $comp_id);
