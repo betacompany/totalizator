@@ -160,9 +160,15 @@ class User
               GROUP BY uid
               ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC';
 
-        $q = mysql_query('SELECT DISTINCT(`total_stakes`.`uid`) FROM
+        if ($comp_id == 0) {
+            $q = mysql_qw('SELECT DISTINCT(`total_stakes`.`uid`) FROM
+                (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
+                WHERE 1=1');
+        } else {
+            $q = mysql_qw('SELECT DISTINCT(`total_stakes`.`uid`) FROM
                 (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
                 WHERE `total_matches`.`comp_id`=?', $comp_id);
+        }
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
                 print "$name: $value\t";
