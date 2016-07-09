@@ -161,8 +161,7 @@ class User
               ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC';
 
         $q = mysql_query('SELECT DISTINCT(`total_stakes`.`uid`) FROM
-                (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-                WHERE `total_matches`.`comp_id`=?', 10);
+                (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)', 10);
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
                 print "$name: $value\t";
