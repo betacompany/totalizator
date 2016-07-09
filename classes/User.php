@@ -121,35 +121,9 @@ class User
 
     public static function getAllByRating($comp_id = 0)
     {
-        $data = array();
-        $i = 0;
-        // get all users that have stakes
-        if ($comp_id == 0) {
-            $req = mysql_qw('SELECT DISTINCT(`total_stakes`.`uid`) FROM
-                (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-                WHERE 1=1');
-        } else {
-            $req = mysql_qw('SELECT DISTINCT(`total_stakes`.`uid`) FROM
-                (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-                WHERE `total_matches`.`comp_id`=?', $comp_id);
-        }
-        while ($u = mysql_fetch_assoc($req)) {
-            try {
-                $user = new User($u['uid']);
-                $scores = $user->getScores($comp_id);
-
-                $data[$i]['scores'] = $scores;
-                $data[$i]['outcomes'] = $user->getGuessedOutcomes($comp_id);
-                $data[$i]['user'] = $user;
-                $i++;
-            } catch (Exception $e) {
-
-            }
-        }
-
         if ($comp_id == 0) {
             $q = mysql_qw('SELECT `total_stakes`.`uid`,
-              SUM(`total_stakes`.`score`) AS points,
+              SUM(`total_stakes`.`score`) AS scores,
               SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
               SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
               SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
@@ -168,7 +142,7 @@ class User
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
               WHERE `total_matches`.`comp_id`=?
               GROUP BY uid
-              ORDER BY scores DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
+              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
         }
 
         $data = array();
@@ -176,20 +150,12 @@ class User
         while ($row = mysql_fetch_assoc($q)) {
             try {
                 $user = new User($row['uid']);
-
-                print "$user->name $user->surname\t";
-                foreach ($row as $name => $value) {
-                    print "$name: $value\t";
-                }
-
                 $data[$i]['user'] = $user;
                 $data[$i]['scores'] = $row['scores'];
                 $i++;
             } catch (Exception $e) {
             }
-            print "data: $data";
         }
-        print "$data";
         return $data;
     }
 
