@@ -155,7 +155,6 @@ class User
               SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
               SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
-              WHERE 1=1
               GROUP BY uid
               ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC');
         } else {
