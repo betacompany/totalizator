@@ -124,9 +124,9 @@ switch ($_REQUEST['action']) {
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
-                <? if ($user['sort_info'] != "EQUAL" || $user['sort_info'] != ""): ?>
-                    <p class="sort_info"> <?= $user['sort_info'] ?> </p>
-                <? endif; ?>
+                <? if ($user['sort_info'] != "" || $user['sort_info'] != "EQUAL") {
+                    echo '<p class="sort_info">' . $user['sort_info'] . '</p>';
+                } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
             </li>
             <?
