@@ -185,6 +185,8 @@ class User
         }
         while ($row = mysql_fetch_assoc($q)) {
             foreach ($row as $name => $value) {
+                $user = new User($row['uid']);
+                print "$user->name $user->surname\t";
                 print "$name: $value\t";
             }
             print "\r\n";
