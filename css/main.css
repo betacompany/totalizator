@@ -48,6 +48,13 @@ ol li.skipped {
     list-style: none;
 }
 
-span.sort_info {
+span.sort_info_arrows {
+    padding-left: 45px;
+    color: rgba(128, 128, 128, 0.63);
+    font-size: 16px;
+    vertical-align: middle;
+}
 
+span.sort_info {
+    padding-left: 5px;
 }

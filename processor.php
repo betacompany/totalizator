@@ -126,7 +126,7 @@ switch ($_REQUEST['action']) {
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
-                    echo '<span class="sort_info">' . $user['sort_info'] . '</span>';
+                    echo '<span class="sort_info_arrows">' . "\u{23EB}" . '</span>' . '<span class="sort_info">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
                 <? $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>
