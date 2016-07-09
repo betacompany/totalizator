@@ -168,7 +168,7 @@ class User
               FROM (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
               WHERE `total_matches`.`comp_id`=?
               GROUP BY uid
-              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
+              ORDER BY scores DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
         }
 
         $data = array();
