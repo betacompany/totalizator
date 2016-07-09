@@ -89,24 +89,30 @@ class User
         return $sum;
     }
 
-    public function getGuessesOrdered($comp_id = 0, $points)
+    public static function descTable() {
+        $req = mysql_qw('DESCRIBE total_stakes');
+        return mysql_result($req, 0);
+    }
+
+    public static function getGuessesOrdered($comp_id = 0)
     {
         if ($comp_id != 0) {
-            $req = mysql_qw('SELECT COUNT(*) AS `scores`, SUM(`total_stakes`.`score`) AS points,
+            $req = mysql_qw('SELECT `total_stakes`.`uid` AS uid,
+              COUNT(*) AS `scores`, SUM(`total_stakes`.`score`) AS points,
               SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
               SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
               SUM(IF(`total_stakes`.`score` = 2, 1, 0)) AS count2,
               SUM(IF(`total_stakes`.`score` = 1, 1, 0)) AS count1
               FROM `total_stakes`
               INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`
-              WHERE `uid`=? AND `comp_id`=?
-              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $this->getId(), $comp_id);
-            return mysql_result($req, 0, 'scores');
+              WHERE `comp_id`=?
+              ORDER BY points DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC', $comp_id);
+            return mysql_result($req, 0);
         }
 
         $sum = 0;
         foreach (Competition::getAll() as $competition) {
-            $sum += intval($this->getGuessesOrdered($competition->getId(), $points));
+            $sum += intval(User::getGuessesOrdered($competition->getId()));
         }
 
         return $sum;
@@ -121,6 +127,7 @@ class User
     {
         $data = array();
         $i = 0;
+        // get all users that have stakes
         if ($comp_id == 0) {
             $req = mysql_qw('SELECT DISTINCT(`total_stakes`.`uid`) FROM
                 (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
@@ -134,10 +141,8 @@ class User
             try {
                 $user = new User($u['uid']);
                 $scores = $user->getScores($comp_id);
-                $guesses_sorted = $user->getGuessesOrdered($comp_id, $j);
 
                 $data[$i]['scores'] = $scores;
-                $data[$i]['point_stats'] = $guesses_sorted;
                 $data[$i]['outcomes'] = $user->getGuessedOutcomes($comp_id);
                 $data[$i]['user'] = $user;
                 $i++;
@@ -145,7 +150,10 @@ class User
 
             }
         }
-        print_r($data);
+        print User::descTable();
+//        $guesses_sorted = User::getGuessesOrdered($comp_id);
+//        $data[$i]['point_stats'] = $guesses_sorted;
+//        print_r($data);
         return $data;
     }
 
