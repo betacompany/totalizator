@@ -24,8 +24,7 @@ switch ($_REQUEST['action']) {
         break;
 
     case 'get_stakes':
-        function out($title, $stakes)
-        {
+        function out($title, $stakes) {
             echo '<div class="span4">';
             $count = count($stakes);
             echo "<h6>$title ($count)</h6>";
@@ -37,8 +36,7 @@ switch ($_REQUEST['action']) {
             echo '</ul></div>';
         }
 
-        function filter($all, $type)
-        {
+        function filter($all, $type) {
             $result = array();
             foreach ($all as $item) {
                 if ($item->getType() == $type) {
@@ -126,8 +124,8 @@ switch ($_REQUEST['action']) {
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
-                    echo '<span class="sort_info_arrows" onclick="showInfo()">' . "&#9195;" .
-                        '</span>' . '<span class="sort_info" id="sort_info_message" style="visibility: hidden">' . $user['sort_info'] . '</span>';
+                    echo '<a href="#" <span class="sort_info_arrows" onclick="showInfo()">' . "&#9195;" . '</span> </a>' .
+                        '<span class="sort_info" id="sort_info_message" style="visibility: hidden">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
                 <? $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>
@@ -141,6 +139,10 @@ switch ($_REQUEST['action']) {
 
 <script>
     function showInfo() {
-        document.getElementById("sort_info_message").style.visibility='visible';
+        var element = document.getElementById("sort_info_message");
+        if (element.offsetParent == null) {
+            element.style.visibility = 'visible';
+        }
+        else element.style.visibility = 'hidden';
     }
 </script>
