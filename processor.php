@@ -140,7 +140,7 @@ switch ($_REQUEST['action']) {
 <script>
     function showInfo() {
         var element = document.getElementById("sort_info_message");
-        if (element.offsetParent == null) {
+        if (element.style.visibility == 'hidden') {
             element.style.visibility = 'visible';
         }
         else element.style.visibility = 'hidden';
