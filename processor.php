@@ -124,8 +124,8 @@ switch ($_REQUEST['action']) {
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
-                    echo '<a href="#" <span class="sort_info_arrows" onclick="showInfo()">' . "&#9195;" . '</span></a>' .
-                        '<span class="sort_info" id="sort_info_message" style="visibility: hidden">' . $user['sort_info'] . '</span>';
+                    echo '<a href="#" <span class="sort_info_arrows" onclick="showInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
+                        '<span class="sort_info" id="sort_info_message_' . $cur_uid . '" style="visibility: hidden">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
                 <? $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>
@@ -138,8 +138,8 @@ switch ($_REQUEST['action']) {
 ?>
 
 <script>
-    function showInfo() {
-        var element = document.getElementById("sort_info_message");
+    function showInfo(uid) {
+        var element = document.getElementById("sort_info_message_" + uid);
         if (element.style.visibility == 'hidden') {
             element.style.visibility = 'visible';
         }
