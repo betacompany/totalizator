@@ -124,7 +124,7 @@ switch ($_REQUEST['action']) {
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
-                    echo '<a href="#" <span class="sort_info_arrows" onclick="showInfo()">' . "&#9195;" . '</span>>' .
+                    echo '<a href="#" <span class="sort_info_arrows" onclick="showInfo()">' . "&#9195;" . '</span></a>' .
                         '<span class="sort_info" id="sort_info_message" style="visibility: hidden">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
