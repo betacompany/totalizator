@@ -198,3 +198,7 @@ function filter(o, items, filter) {
         }
     })
 }
+
+function showAdvancedRatingInfo(uid) {
+    $("#sort_info_message_" + uid).toggle();
+}
