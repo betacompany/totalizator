@@ -200,6 +200,5 @@ function filter(o, items, filter) {
 }
 
 function showAdvancedRatingInfo(uid) {
-    var el = '#sort_info_message_' + uid;
-    $(el).toggle();
+    $('#sort_info_message_' + uid).toggle();
 }
