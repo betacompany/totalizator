@@ -200,5 +200,8 @@ function filter(o, items, filter) {
 }
 
 function showAdvancedRatingInfo(uid) {
-    $('#sort_info_message_' + uid).show();
+    var element = document.getElementById("sort_info_message_" + uid);
+    if (element.style.visibility == 'hidden') {
+        element.style.visibility = 'visible';
+    }
 }
