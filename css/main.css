@@ -43,3 +43,19 @@ form {
     text-align: center;
     color: #ccc;
 }
+
+ol li.skipped {
+    list-style: none;
+}
+
+span.sort_info_arrows {
+    padding-left: 10px;
+    color: rgba(128, 128, 128, 0.27);
+    font-size: 16px;
+    vertical-align: bottom;
+}
+
+span.sort_info {
+    padding-left: 5px;
+    color: rgba(147, 147, 147, 0.49);
+}

@@ -92,7 +92,7 @@ switch ($_REQUEST['action']) {
             <? if ($_REQUEST['type'] == 'played'): ?>
                 <div class="alert alert-info">И ещё много-много матчей...</div>
             <? endif; ?>
-        <?
+            <?
         } else {
             echo '<div class="alert alert-info">Матчей нет</div>';
         }
@@ -113,18 +113,24 @@ switch ($_REQUEST['action']) {
 
     case 'load_rating':
         $users = User::getAllByRating($_REQUEST['comp_id']);
+        $next_li_class = "";
         foreach ($users as $user) {
             $cur_uid = $user['user']->getId();
             ?>
-            <li>
+            <li class="<?= $next_li_class ?>">
                 <? if ($cur_uid == userid()) { ?><strong><? } ?>
                     <a href="#"
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
+                <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
+                    echo '<a href="#" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
+                        '<span class="sort_info" id="sort_info_message_' . $cur_uid . '" style="visibility: hidden">' . $user['sort_info'] . '</span>';
+                } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
+                <? $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>
             </li>
-        <?
+            <?
         }
         break;
 }
