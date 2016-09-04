@@ -105,7 +105,7 @@ switch ($_REQUEST['action']) {
             <? if ($_REQUEST['type'] == 'played'): ?>
                 <div class="alert alert-info">И ещё много-много матчей...</div>
             <? endif; ?>
-            <?
+        <?
         } else {
             echo '<div class="alert alert-info">Матчей нет</div>';
         }
@@ -137,7 +137,7 @@ switch ($_REQUEST['action']) {
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
-                    echo '<a href="#" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
+                    echo '<a class="sort_info_link" href="#a" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
                         '<span class="sort_info" id="sort_info_message_' . $cur_uid . '" style="visibility: hidden">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
