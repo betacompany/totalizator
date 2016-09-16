@@ -44,21 +44,22 @@ switch ($_REQUEST['action']) {
                     continue;
                 if ($stake->getType() == $type) {
                     array_push($filter_result, $stake);
-                    $stakeScore = $stake->getStakeScore();
-                    print $stakeScore . " ";
-                    $score_popularity[$stakeScore]++;
-                    print $score_popularity[$stakeScore] . " ";
+                    $score_popularity[$stake->getStakeScore()]++;
                 }
             }
             arsort($score_popularity);
             print "popularity";
             print_r($score_popularity);
-            $final = array();
+            $result = array();
             foreach ($score_popularity as $score) {
+                print " score: " . $score;
                 foreach ($filter_result as $stake) {
+                    print " stake: " . $stake;
                     if ($stake->getStakeScore() == $score)
-                        $final[] = $stake;
+                        $result[] = $stake;
                 }
+                print " iteration over: ";
+                print_r($result);
             }
             return $filter_result;
         }
