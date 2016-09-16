@@ -53,7 +53,7 @@ switch ($_REQUEST['action']) {
             $result = array();
             foreach ($score_popularity as $score => $popularity) {
                 print " score: " . $score;
-                foreach ($filter_result as $stake) {
+                foreach ($filter_result as $index => $stake) {
                     print " stake: " . $stake;
                     if ($stake->getStakeScore() == $score)
                         $result[] = $stake;
