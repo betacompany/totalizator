@@ -45,9 +45,11 @@ switch ($_REQUEST['action']) {
                 if ($stake->getType() == $type) {
                     array_push($filter_result, $stake);
                     $stakeScore = $stake->getStakeScore();
+                    print $stakeScore;
                     if (in_array($stakeScore, $score_popularity)) {
                         $score_popularity[$stakeScore] += 1;
                     } else $score_popularity[$stakeScore] = 1;
+                    print $score_popularity[$stakeScore];
                 }
             }
             arsort($score_popularity);
