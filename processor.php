@@ -44,23 +44,22 @@ switch ($_REQUEST['action']) {
                     continue;
                 if ($stake->getType() == $type) {
                     array_push($filter_result, $stake);
-                    $score_popularity[$stake->getStakeScore()]++;
+                    $stakeScore = $stake->getStakeScore();
+                    print $stakeScore . " ";
+                    $score_popularity[$stakeScore]++;
+                    print $score_popularity[$stakeScore] . " ";
                 }
             }
             arsort($score_popularity);
-            $result = array();
+            print "popularity";
+            print_r($score_popularity);
+            $final = array();
             foreach ($score_popularity as $score) {
-                print " score: " . $score;
                 foreach ($filter_result as $stake) {
-                    print " stake: " . $stake;
                     if ($stake->getStakeScore() == $score)
-                        $result[] = $stake;
+                        $final[] = $stake;
                 }
-                print " 1 popularity iteration:";
-                print_r($result);
             }
-            print " result:";
-            print_r($result);
             return $filter_result;
         }
 
@@ -69,6 +68,8 @@ switch ($_REQUEST['action']) {
             if (!$match->isAvailableFor(userid())) {
                 $stakes = Stake::getByMatchId($_REQUEST['match_id']);
                 echo '<div class="row-fluid">';
+                print "stakes";
+                print_r($stakes);
                 out("{$match->getCompetitor1()->getName()} победит", filter_and_sort($stakes, Stake::WIN1));
                 out("ничья", filter_and_sort($stakes, Stake::DRAW));
                 out("{$match->getCompetitor2()->getName()} победит", filter_and_sort($stakes, Stake::WIN2));
