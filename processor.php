@@ -40,6 +40,8 @@ switch ($_REQUEST['action']) {
             $filter_result = array();
             $score_popularity = array();
             foreach ($all as $item) {
+                if ($item->getUID() == userid())
+                    continue;
                 if ($item->getType() == $type) {
                     $filter_result[] = $item;
                     $score_popularity[$item->getStakeScore()] += 1;
@@ -47,7 +49,7 @@ switch ($_REQUEST['action']) {
             }
             print "popularity before sort";
             print_r($score_popularity);
-            asort($score_popularity);
+            arsort($score_popularity);
             print "popularity after sort";
             print_r($score_popularity);
             $final = array();
@@ -65,8 +67,6 @@ switch ($_REQUEST['action']) {
             if (!$match->isAvailableFor(userid())) {
                 $stakes = Stake::getByMatchId($_REQUEST['match_id']);
                 echo '<div class="row-fluid">';
-                print "stakes";
-                print_r($stakes);
                 out("{$match->getCompetitor1()->getName()} победит", filter_and_sort($stakes, Stake::WIN1));
                 out("ничья", filter_and_sort($stakes, Stake::DRAW));
                 out("{$match->getCompetitor2()->getName()} победит", filter_and_sort($stakes, Stake::WIN2));
