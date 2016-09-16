@@ -50,9 +50,9 @@ switch ($_REQUEST['action']) {
                     } else $score_popularity[$stakeScore] = 1;
                 }
             }
-            print "only filtered";
-            print_r($filter_result);
             arsort($score_popularity);
+            print "popularity";
+            print_r($score_popularity);
             $final = array();
             foreach ($score_popularity as $score) {
                 foreach ($filter_result as $stake) {
@@ -60,7 +60,7 @@ switch ($_REQUEST['action']) {
                         $final[] = $stake;
                 }
             }
-            return $final;
+            return $filter_result;
         }
 
         try {
