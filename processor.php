@@ -48,19 +48,19 @@ switch ($_REQUEST['action']) {
                 }
             }
             arsort($score_popularity);
-            print "popularity: ";
-            print_r($score_popularity);
-            print "filtered: ";
-            print_r($filter_result);
             $result = array();
             foreach ($score_popularity as $score) {
+                print " score: " . $score;
                 foreach ($filter_result as $stake) {
+                    print " stake: " . $stake;
                     if ($stake->getStakeScore() == $score)
                         $result[] = $stake;
                 }
+                print " 1 popularity iteration:";
+                print_r($result);
             }
-            print "result:";
-            print $result;
+            print " result:";
+            print_r($result);
             return $result;
         }
 
