@@ -38,7 +38,7 @@ require_once dirname(__FILE__) . '/classes/User.php';
                 </li>
             </ul>
 
-            <script type="text/javascript">loadRating(<?=$competitions[0]?>);</script>
+            <script type="text/javascript">loadRating(<?=$competitions[0]->getId()?>);</script>
         </div>
 
         <div class="span8">
