@@ -61,7 +61,7 @@ switch ($_REQUEST['action']) {
             }
             print " result:";
             print_r($result);
-            return $result;
+            return $filter_result;
         }
 
         try {
