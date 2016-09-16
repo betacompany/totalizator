@@ -22,9 +22,6 @@ require_once dirname(__FILE__) . '/classes/User.php';
 
         <div class="span2 offset1">
             <ul class="nav nav-pills nav-stacked">
-                <li id="menu_0" class="active">
-                    <a href="#" onclick="loadRating(0);">Общий</a>
-                </li>
                 <?
                 $competitions = Competition::getAll();
                 foreach ($competitions as $competition) {
@@ -36,7 +33,9 @@ require_once dirname(__FILE__) . '/classes/User.php';
                 <?
                 }
                 ?>
-
+                <li id="menu_0" class="active">
+                    <a href="#" onclick="loadRating(0);">Общий</a>
+                </li>
             </ul>
 
             <script type="text/javascript">loadRating(0);</script>
