@@ -36,27 +36,28 @@ switch ($_REQUEST['action']) {
             echo '</ul></div>';
         }
 
-        function filter_and_sort($all, $type) {
+        function filter_and_sort($all_stakes, $type) {
             $filter_result = array();
             $score_popularity = array();
-            foreach ($all as $item) {
-                if ($item->getUID() == userid())
+            foreach ($all_stakes as $stake) {
+                if ($stake->getUID() == userid())
                     continue;
-                if ($item->getType() == $type) {
-                    $filter_result[] = $item;
-                    $score_popularity[$item->getStakeScore()] += 1;
+                if ($stake->getType() == $type) {
+                    array_push($filter_result, $stake);
+                    $stakeScore = $stake->getStakeScore();
+                    if (in_array($stakeScore, $score_popularity)) {
+                        $score_popularity[$stakeScore] += 1;
+                    } else $score_popularity[$stakeScore] = 1;
                 }
             }
-            print "popularity before sort";
-            print_r($score_popularity);
+            print "only filtered";
+            print_r($filter_result);
             arsort($score_popularity);
-            print "popularity after sort";
-            print_r($score_popularity);
             $final = array();
             foreach ($score_popularity as $score) {
-                foreach ($filter_result as $item) {
-                    if ($item->getStakeScore() == $score)
-                        $final[] = $item;
+                foreach ($filter_result as $stake) {
+                    if ($stake->getStakeScore() == $score)
+                        $final[] = $stake;
                 }
             }
             return $final;
@@ -110,7 +111,7 @@ switch ($_REQUEST['action']) {
             <? if ($_REQUEST['type'] == 'played'): ?>
                 <div class="alert alert-info">И ещё много-много матчей...</div>
             <? endif; ?>
-        <?
+            <?
         } else {
             echo '<div class="alert alert-info">Матчей нет</div>';
         }
