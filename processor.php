@@ -51,7 +51,7 @@ switch ($_REQUEST['action']) {
             print "popularity";
             print_r($score_popularity);
             $result = array();
-            foreach ($score_popularity as $score) {
+            foreach ($score_popularity as $score => $popularity) {
                 print " score: " . $score;
                 foreach ($filter_result as $stake) {
                     print " stake: " . $stake;
