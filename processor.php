@@ -29,9 +29,12 @@ switch ($_REQUEST['action']) {
             $count = count($stakes);
             echo "<h6>$title ($count)</h6>";
             echo '<ul class="unstyled">';
+            $previousStakeScore = $stakes[0];
             foreach ($stakes as $stake) {
                 $mine = $stake->getUID() == userid();
-                echo "<li class=\"{$stake->getType()}\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stake->getStakeScore() . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                $stakeScore = $stake->getStakeScore();
+                echo "<li class=\"" . ($stake->getType()) . "\" " . (strcmp($stakeScore, $previousStakeScore) == 0 ? "style=\"padding-top: 15px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                $previousStakeScore = $stakeScore;
             }
             echo '</ul></div>';
         }
@@ -48,8 +51,6 @@ switch ($_REQUEST['action']) {
                 }
             }
             arsort($score_popularity);
-//            print "popularity";
-//            print_r($score_popularity);
             $result = array();
             foreach ($score_popularity as $score => $popularity) {
                 foreach ($filter_result as $index => $stake) {
@@ -66,8 +67,6 @@ switch ($_REQUEST['action']) {
             if (!$match->isAvailableFor(userid())) {
                 $stakes = Stake::getByMatchId($_REQUEST['match_id']);
                 echo '<div class="row-fluid">';
-                print "stakes";
-                print_r($stakes);
                 out("{$match->getCompetitor1()->getName()} победит", filter_and_sort($stakes, Stake::WIN1));
                 out("ничья", filter_and_sort($stakes, Stake::DRAW));
                 out("{$match->getCompetitor2()->getName()} победит", filter_and_sort($stakes, Stake::WIN2));
