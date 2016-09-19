@@ -33,7 +33,7 @@ switch ($_REQUEST['action']) {
             foreach ($stakes as $stake) {
                 $mine = $stake->getUID() == userid();
                 $stakeScore = $stake->getStakeScore();
-                echo "<li class=\"" . ($stake->getType()) . "\" " . (strcmp($stakeScore, $previousStakeScore) == 0 ? "style=\"padding-top: 15px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                echo "<li class=\"" . ($stake->getType()) . "\" " . (strcmp($stakeScore, $previousStakeScore) != 0 ? "style=\"padding-top: 15px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
                 $previousStakeScore = $stakeScore;
             }
             echo '</ul></div>';
