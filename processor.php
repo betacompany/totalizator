@@ -54,11 +54,9 @@ switch ($_REQUEST['action']) {
 //            foreach ($score_popularity as $score => $popularity) {
 //                print " score: " . $score;
 //            }
-//            foreach ($filter_result as $index => $stake) {
-//                print " stake: " . $stake;
-//                    if ($stake->getStakeScore() == $score)
-//                        array_push($result[], $stake);
-//                }
+            foreach ($filter_result as $index => $stake) {
+                print " stake: " . $stake->getStakeScore();
+            }
 //                print " iteration over: ";
 //                print_r($result);
 //            }
