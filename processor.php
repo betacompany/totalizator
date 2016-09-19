@@ -29,18 +29,34 @@ switch ($_REQUEST['action']) {
             $count = count($stakes);
             echo "<h6>$title ($count)</h6>";
             echo '<ul class="unstyled">';
+            $previousStakeScore = $stakes[0];
             foreach ($stakes as $stake) {
                 $mine = $stake->getUID() == userid();
-                echo "<li class=\"{$stake->getType()}\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stake->getStakeScore() . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                $stakeScore = $stake->getStakeScore();
+                echo "<li class=\"" . ($stake->getType()) . "\" " . (strcmp($stakeScore, $previousStakeScore) != 0 ? "style=\"padding-top: 10px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                $previousStakeScore = $stakeScore;
             }
             echo '</ul></div>';
         }
 
-        function filter($all, $type) {
+        function filter_and_sort($all_stakes, $type) {
+            $filter_result = array();
+            $score_popularity = array();
+            foreach ($all_stakes as $stake) {
+                if ($stake->getUID() == userid())
+                    continue;
+                if ($stake->getType() == $type) {
+                    array_push($filter_result, $stake);
+                    $score_popularity[$stake->getStakeScore()]++;
+                }
+            }
+            arsort($score_popularity);
             $result = array();
-            foreach ($all as $item) {
-                if ($item->getType() == $type) {
-                    $result[] = $item;
+            foreach ($score_popularity as $score => $popularity) {
+                foreach ($filter_result as $index => $stake) {
+                    if (strcmp($stake->getStakeScore(), $score) == 0) {
+                        array_push($result, $stake);
+                    }
                 }
             }
             return $result;
@@ -51,9 +67,9 @@ switch ($_REQUEST['action']) {
             if (!$match->isAvailableFor(userid())) {
                 $stakes = Stake::getByMatchId($_REQUEST['match_id']);
                 echo '<div class="row-fluid">';
-                out("{$match->getCompetitor1()->getName()} победит", filter($stakes, Stake::WIN1));
-                out("ничья", filter($stakes, Stake::DRAW));
-                out("{$match->getCompetitor2()->getName()} победит", filter($stakes, Stake::WIN2));
+                out("{$match->getCompetitor1()->getName()} победит", filter_and_sort($stakes, Stake::WIN1));
+                out("ничья", filter_and_sort($stakes, Stake::DRAW));
+                out("{$match->getCompetitor2()->getName()} победит", filter_and_sort($stakes, Stake::WIN2));
                 echo '</div>';
             } else {
                 echo 'Атата!';
@@ -124,7 +140,7 @@ switch ($_REQUEST['action']) {
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
-                    echo '<a href="#" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
+                    echo '<a class="sort_info_link" href="#a" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
                         '<span class="sort_info" id="sort_info_message_' . $cur_uid . '" style="visibility: hidden">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
