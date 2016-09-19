@@ -48,21 +48,21 @@ switch ($_REQUEST['action']) {
                 }
             }
             arsort($score_popularity);
-            print "popularity";
-            print_r($score_popularity);
-            $result = array();
-            foreach ($score_popularity as $score => $popularity) {
-                print " score: " . $score;
-            }
-            foreach ($filter_result as $index => $stake) {
-                print " stake: " . $stake;
+//            print "popularity";
+//            print_r($score_popularity);
+//            $result = array();
+//            foreach ($score_popularity as $score => $popularity) {
+//                print " score: " . $score;
+//            }
+//            foreach ($filter_result as $index => $stake) {
+//                print " stake: " . $stake;
 //                    if ($stake->getStakeScore() == $score)
 //                        array_push($result[], $stake);
 //                }
 //                print " iteration over: ";
 //                print_r($result);
-            }
-            print_r($result);
+//            }
+//            print_r($result);
             return $filter_result;
         }
 
