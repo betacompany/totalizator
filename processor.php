@@ -43,8 +43,6 @@ switch ($_REQUEST['action']) {
             $filter_result = array();
             $score_popularity = array();
             foreach ($all_stakes as $stake) {
-                if ($stake->getUID() == userid())
-                    continue;
                 if ($stake->getType() == $type) {
                     array_push($filter_result, $stake);
                     $score_popularity[$stake->getStakeScore()]++;
