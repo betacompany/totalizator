@@ -125,7 +125,12 @@ class Match {
     }
 
     public function getTime() {
-        return date('d/m/Y в H:i', strtotime($this->timestamp));
+	$d = DateTime::createFromFormat(
+	    "U",
+	    $this->timestamp,
+	    new DateTimeZone('UTC')
+	)->setTimeZone(new DateTimeZone('Europe/Moscow'));
+        return date('d/m/Y в GG:i', $d->getTimestamp());
     }
 
     public function makeStake($uid, $score1, $score2) {
