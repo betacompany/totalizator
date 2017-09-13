@@ -63,7 +63,7 @@ require_once dirname(__FILE__) . '/classes/Competitor.php';
     </select> <br/>
 
     Дата (ГГГГ-ММ-ДД): <input type="text" name="date"/>
-    Время (ЧЧ:ММ): <input type="text" name="time"/> <br/>
+    Время (ЧЧ:ММ) В UTC!!!: <input type="text" name="time"/> <br/>
 
     <input type="submit" value="Добавить"/>
 </form>
