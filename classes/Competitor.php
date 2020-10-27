@@ -17,11 +17,13 @@ class Competitor {
     private $name;
 
     public function __construct($id) {
-        $competitor = Competitor::getById($id);
-        if ($competitor != null) {
-            return $competitor;
-        } else {
-            throw new Exception('No competitor with id=' . $id, 0);
+        if ($id != null) {
+            $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $id);
+            if ($comp = mysql_fetch_assoc($req)) {
+                return Competitor::fill($comp);
+            } else {
+                throw new Exception('No competitor with id=' . $id, 0);
+            }
         }
     }
 
@@ -48,15 +50,6 @@ class Competitor {
         }
 
         return $data;
-    }
-
-    public static function getById($id) {
-        $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $id);
-        if ($comp = mysql_fetch_assoc($req)) {
-            return Competitor::fill($comp);
-        } else {
-            return null;
-        }
     }
 
     public static function getOrCreateByExtId($ext_id, $name) {
