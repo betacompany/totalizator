@@ -16,14 +16,20 @@ class Competitor {
     private $ext_id;
     private $name;
 
-    public function __construct($id) {
-        if ($id != null) {
+    public function __construct($data) {
+        if (is_scalar($data)) {
             $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $id);
             if ($comp = mysql_fetch_assoc($req)) {
-                return Competitor::fill($comp);
+                $this->id = $comp['id'];
+                $this->ext_id = $comp['ext_id'];
+                $this->name = $comp['name'];
             } else {
                 throw new Exception('No competitor with id=' . $id, 0);
             }
+        } else if (is_array($data)) {
+            $this->id = $data['id'];
+            $this->ext_id = $data['ext_id'];
+            $this->name = $data['name'];
         }
     }
 
@@ -55,7 +61,7 @@ class Competitor {
     public static function getOrCreateByExtId($ext_id, $name) {
         $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `ext_id`=?', $ext_id);
         if ($comp = mysql_fetch_assoc($req)) {
-            return Competitor::fill($comp);
+            return new Competitor($comp);
         } else {
             mysql_qw(
                 'INSERT INTO `total_competitors` SET `ext_id`=?, `name`=? ON DUPLICATE KEY UPDATE `name`=?',
@@ -64,19 +70,11 @@ class Competitor {
 
             $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `ext_id`=?', $ext_id);
             if ($comp = mysql_fetch_assoc($req)) {
-                return Competitor::fill($comp);
+                return new Competitor($comp);
             } else {
                 throw new Exception('Unable to create non-existing competitor for ext_id=' . $ext_id);
             }
         }
-    }
-
-    private static function fill($comp) {
-        $compObj = new Competitor();
-        $compObj->id = $comp['id'];
-        $compObj->ext_id = $comp['ext_id'];
-        $compObj->name = $comp['name'];
-        return $compObj;
     }
 }
 
