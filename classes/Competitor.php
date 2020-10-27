@@ -18,13 +18,13 @@ class Competitor {
 
     public function __construct($data) {
         if (is_scalar($data)) {
-            $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $id);
+            $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $data);
             if ($comp = mysql_fetch_assoc($req)) {
                 $this->id = $comp['id'];
                 $this->ext_id = $comp['ext_id'];
                 $this->name = $comp['name'];
             } else {
-                throw new Exception('No competitor with id=' . $id, 0);
+                throw new Exception('No competitor with id=' . $data, 0);
             }
         } else if (is_array($data)) {
             $this->id = $data['id'];
