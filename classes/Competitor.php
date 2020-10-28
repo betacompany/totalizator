@@ -38,7 +38,7 @@ class Competitor {
     }
 
     public function getExtId() {
-        return $this->id;
+        return $this->ext_id;
     }
 
     public function getName() {
