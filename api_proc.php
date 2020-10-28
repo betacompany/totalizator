@@ -23,7 +23,7 @@ switch ($_REQUEST['action']) {
         
         Match::getOrCreateByExtId($comp_id, $comp1->getId(), $comp2->getId(), $ext_id, $datetime);
         
-        echo('OK');
+        echo('OK ' . $comp1->getId() . ' vs ' . $comp2->getId());
         
     break;
 }
