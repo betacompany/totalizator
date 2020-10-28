@@ -8,10 +8,22 @@ if ($_REQUEST['access_key'] != ACCESS_KEY) {
 }
 
 require_once dirname(__FILE__) . '/classes/Match.php';
-require_once dirname(__FILE__) . '/classes/Stake.php';
+require_once dirname(__FILE__) . '/classes/Competitor.php';
 
 switch ($_REQUEST['action']) {
     case 'import_ext_match':
         $data = json_decode(file_get_contents("php://input"), true);
-        echo $data['ext_id'];
+        
+        $comp_id = $data['comp_id'];
+        $ext_id = $data['ext_id'];
+        $datetime = $data['datetime'];
+        
+        $comp1 = Competitor::getOrCreateByExtId($data['comp1']['ext_id'], $data['comp1']['name']);
+        $comp2 = Competitor::getOrCreateByExtId($data['comp2']['ext_id'], $data['comp2']['name']);
+        
+        Match::getOrCreateByExtId($comp_id, $comp1->getId(), $comp2->getId(), $ext_id, $datetime);
+        
+        echo('OK');
+        
+    break;
 }
