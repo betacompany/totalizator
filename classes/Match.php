@@ -15,6 +15,7 @@ define('AVAILABLE_TIME', 120);
  */
 class Match {
     private $id;
+    private $ext_id;
 
     private $comp_id;
     private $comp1_id;
@@ -34,6 +35,7 @@ class Match {
         $req = mysql_qw('SELECT * FROM `total_matches` WHERE `id`=?', $id);
         if ($match = mysql_fetch_assoc($req)) {
             $this->id = $match['id'];
+            $this->ext_id = $match['ext_id'];
             $this->comp_id = $match['comp_id'];
             $this->comp1_id = $match['comp1_id'];
             $this->comp2_id = $match['comp2_id'];
@@ -49,6 +51,10 @@ class Match {
 
     public function getId() {
         return $this->id;
+    }
+
+    public function getExtId() {
+        return $this->ext_id;
     }
 
     public function getScore1() {
@@ -247,6 +253,25 @@ class Match {
 			`comp1_id`=?,
 			`comp2_id`=?,
 			`timestamp`=?', $comp_id, $comp1_id, $comp2_id, $datetime);
+    }
+
+    public static function getOrCreateByExtId($comp_id, $comp1_id, $comp2_id, $ext_id, $datetime) {
+        mysql_qw(
+            'INSERT INTO `total_matches` SET
+                `comp_id`=?,
+                `comp1_id`=?,
+                `comp2_id`=?,
+                `ext_id`=?,
+                `timestamp`=?
+            ON DUPLICATE KEY UPDATE
+                `comp_id`=?,
+                `comp1_id`=?,
+                `comp2_id`=?,
+                `ext_id`=?,
+                `timestamp`=?',
+            $comp_id, $comp1_id, $comp2_id, $ext_id, $datetime,
+            $comp_id, $comp1_id, $comp2_id, $ext_id, $datetime
+        );
     }
 }
 
