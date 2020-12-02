@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" type="text/css"/>
 
     <script src="/javascript/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="/javascript/main.js?72" type="text/javascript"></script>
+    <script src="/javascript/main.js?74" type="text/javascript"></script>
     <script src="/bootstrap/js/bootstrap.js" type="text/javascript"></script>
     <script src="/bootstrap/js/bootstrap-dropdown.js" type="text/javascript"></script>
 </head>
