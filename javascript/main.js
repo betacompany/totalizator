@@ -4,6 +4,9 @@ function make(o) {
     var score1 = $(o).parent().children('input[name=score1]').val();
     var score2 = $(o).parent().children('input[name=score2]').val();
     var id = $(o).parent().children('input[name=match_id]').val();
+    if (score1 === '' || score2 === '') {
+        return;
+    }
     $.ajax({
         url:'/processor.php',
         data:{

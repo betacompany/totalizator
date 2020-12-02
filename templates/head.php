@@ -2,7 +2,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Тотализатор пайпосайта</title>
 
-    <link rel="stylesheet" href="/css/main.css?73" type="text/css"/>
+    <link rel="stylesheet" href="/css/main.css?74" type="text/css"/>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" type="text/css"/>
 
