@@ -140,9 +140,9 @@ switch ($_REQUEST['action']) {
                 <? if ($strong) { ?><strong><? } ?>
                 <? if ($mark) { ?><mark><? } ?>
                     <a href="#"
-                       onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
-                <? if ($mark) { ?></mark><? } ?>
-                <? if ($strong) { ?></strong><? } ?>
+                       onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a><? 
+                if ($mark) { ?></mark><? }
+                if ($strong) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
                     echo '<a class="sort_info_link" href="#a" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
