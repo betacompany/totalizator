@@ -136,7 +136,7 @@ switch ($_REQUEST['action']) {
             <li class="<?= $next_li_class ?>">
                 <? if ($cur_uid == userid()) { ?><strong><? } ?>
                     <a href="#"
-                       <? if ($leaderboard->hasPlayer($cur_uid)) { ?>class="in_lb" <? } ?>
+                       <? if ($leaderboard != null && $leaderboard->hasPlayer($cur_uid)) { ?>class="in_lb" <? } ?>
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
