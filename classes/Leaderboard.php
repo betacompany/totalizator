@@ -17,27 +17,12 @@ class Leaderboard {
     private $playerIdsHash = array();
 
     public function __construct($data) {
-        if (is_scalar($data)) {
-            $req = mysql_qw('SELECT * FROM `total_leaderboards` WHERE `id`=?', $data);
-            if ($lb = mysql_fetch_assoc($req)) {
-                $this->id = $lb['id'];
-                $this->compId = $lb['comp_id'];
-                $this->finished = $lb['finished'];
-                $req = mysql_qw('SELECT `uid` FROM `total_leaderboard_players` WHERE `lb_id`=?', $this->id);
-                while ($pl = mysql_fetch_assoc($req)) {
-                    $this->playerIdsHash[$pl['uid']] = true;
-                }
-            } else {
-                throw new Exception('No leaderboard with id=' . $data, 0);
-            }
-        } else if (is_array($data)) {
-            $this->id = $data['id'];
-            $this->compId = $data['comp_id'];
-            $this->finished = $data['finished'];
-            $req = mysql_qw('SELECT `uid` FROM `total_leaderboard_players` WHERE `lb_id`=?', $this->id);
-            while ($pl = mysql_fetch_assoc($req)) {
-                $this->playerIdsHash[$pl['uid']] = true;
-            }
+        $this->id = $data['id'];
+        $this->compId = $data['comp_id'];
+        $this->finished = $data['finished'];
+        $req = mysql_qw('SELECT `uid` FROM `total_leaderboard_players` WHERE `lb_id`=?', $this->id);
+        while ($pl = mysql_fetch_assoc($req)) {
+            $this->playerIdsHash[$pl['uid']] = true;
         }
     }
 
