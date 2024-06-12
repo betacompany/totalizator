@@ -25,7 +25,7 @@ $data = Leaderboard::getGloryHall();
         <div class="span8 offset2">
             <? 
             foreach ($data as $item) {
-                echo $item['user']->gerSNnbsp();
+                echo $item['user']->getSNnbsp();
             } 
             ?>
         </div>
