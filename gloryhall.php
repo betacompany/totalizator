@@ -43,7 +43,7 @@ function compile_row($item) {
     <? include 'templates/menu.php'; ?>
 
     <div class="row" style="margin-top: 100px; margin-bottom: 100px">
-        <div class="span8 offset2">
+        <div class="span4 offset4">
             <? foreach ($upper_bracket as $item) { ?>
             <h1><?= compile_row($item) ?></h1>
             <? } ?>
