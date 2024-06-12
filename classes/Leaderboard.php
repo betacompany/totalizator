@@ -70,9 +70,9 @@ class Leaderboard {
     public static function getGloryHall() {
         $req = mysql_qw('SELECT uid, COUNT(*) as count FROM 
                             `total_leaderboards` l 
-                            JOIN `total_leaderboard_player` p 
+                            JOIN `total_leaderboard_players` p 
                             ON l.id = p.lb_id 
-                         WHERE l.finished = 1 AND p.place = 1
+                         WHERE l.finished = 1 AND p.position = 1
                          GROUP BY uid
                          ORDER BY count DESC');
         $data = array();
