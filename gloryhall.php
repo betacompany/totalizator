@@ -23,16 +23,11 @@ $data = Leaderboard::getGloryHall();
 
     <div class="row">
         <div class="span8 offset2">
-            <ul class="thumbnails">
             <? foreach ($data as $item) { ?>
-                
-                <li class="span3">
-                    <img src="https://placehold.it/260x180" alt="">
-                    <h3><?= $item['user']->getSNnbsp() ?></h3>
-                </li>
 
-            <? } ?>                
-            </ul>
+                <h3><?= $item['user']->getSNnbsp() . " " . str_repeat("&#127942;", $item['count']) ?></h3>
+            
+            <? } ?>
         </div>
     </div>
 </div>
