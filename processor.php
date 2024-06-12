@@ -133,8 +133,8 @@ switch ($_REQUEST['action']) {
 
         foreach ($users as $user) {
             $cur_uid = $user['user']->getId();
-            $strong = $cur_uid == userid();
-            $mark = $leaderboard != null && $leaderboard->hasPlayer($cur_uid);
+            $strong = $leaderboard != null && $leaderboard->hasPlayer($cur_uid);
+            $mark = $cur_uid == userid();
             ?>
             <li class="<?= $next_li_class ?>">
                 <? if ($strong) { ?><strong><? } ?>
