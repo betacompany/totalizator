@@ -9,6 +9,7 @@ if (!accessTest()) {
 require_once dirname(__FILE__) . '/classes/Match.php';
 require_once dirname(__FILE__) . '/classes/Stake.php';
 require_once dirname(__FILE__) . '/classes/User.php';
+require_once dirname(__FILE__) . '/classes/Leaderboard.php';
 require_once dirname(__FILE__) . '/templates/templates.php';
 
 switch ($_REQUEST['action']) {
@@ -127,6 +128,7 @@ switch ($_REQUEST['action']) {
 
     case 'load_rating':
         $users = User::getAllByRating($_REQUEST['comp_id']);
+        $leaderboard = Leaderboard::getByCompId($_REQUEST['comp_id']);
         $next_li_class = "";
         foreach ($users as $user) {
             $cur_uid = $user['user']->getId();
@@ -134,6 +136,7 @@ switch ($_REQUEST['action']) {
             <li class="<?= $next_li_class ?>">
                 <? if ($cur_uid == userid()) { ?><strong><? } ?>
                     <a href="#"
+                       <? if ($leaderboard->hasPlayer($cur_uid)) { ?>class="in_lb" <? } ?>
                        onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
                     <? if ($cur_uid == userid()) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)

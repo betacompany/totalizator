@@ -41,3 +41,17 @@ CREATE TABLE IF NOT EXISTS `total_stakes` (
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`,`match_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `total_leaderboards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comp_id` int(11) NOT NULL,
+  `finished` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `total_leaderboard_players` (
+  `uid` int(11) NOT NULL,
+  `lb_id` int(11) NOT NULL,
+  `score` int(11) NOT NULL DEFAULT '0',
+  `position` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `u_lb` (`uid`,`lb_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
