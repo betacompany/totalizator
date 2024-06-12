@@ -45,7 +45,8 @@ CREATE TABLE IF NOT EXISTS `total_stakes` (
 CREATE TABLE IF NOT EXISTS `total_leaderboards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `comp_id` int(11) NOT NULL,
-  `finished` tinyint(1) NOT NULL DEFAULT '0'
+  `finished` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `total_leaderboard_players` (
