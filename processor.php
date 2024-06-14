@@ -9,6 +9,7 @@ if (!accessTest()) {
 require_once dirname(__FILE__) . '/classes/Match.php';
 require_once dirname(__FILE__) . '/classes/Stake.php';
 require_once dirname(__FILE__) . '/classes/User.php';
+require_once dirname(__FILE__) . '/classes/Leaderboard.php';
 require_once dirname(__FILE__) . '/templates/templates.php';
 
 switch ($_REQUEST['action']) {
@@ -127,24 +128,30 @@ switch ($_REQUEST['action']) {
 
     case 'load_rating':
         $users = User::getAllByRating($_REQUEST['comp_id']);
+        $leaderboard = Leaderboard::getByCompId($_REQUEST['comp_id']);
         $next_li_class = "";
+
         foreach ($users as $user) {
             $cur_uid = $user['user']->getId();
+            $strong = $leaderboard != null && $leaderboard->hasPlayer($cur_uid);
+            $mark = $cur_uid == userid();
             ?>
             <li class="<?= $next_li_class ?>">
-                <? if ($cur_uid == userid()) { ?><strong><? } ?>
+                <? if ($strong) { ?><strong><? } ?>
+                <? if ($mark) { ?><mark><? } ?>
                     <a href="#"
-                       onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a>
-                    <? if ($cur_uid == userid()) { ?></strong><? } ?>
+                       onClick="userClick(this, <?= $cur_uid ?>, <?= $_REQUEST['comp_id'] ?>);"><?= $user['user']->getSNnbsp() ?></a><? 
+                if ($mark) { ?></mark><? }
+                if ($strong) { ?></strong><? } ?>
                 (<?= $user['scores'] ?>)
                 <? if ($user['sort_info'] != "" && $user['sort_info'] != "EQUAL") {
                     echo '<a class="sort_info_link" href="#a" <span class="sort_info_arrows" onclick="showAdvancedRatingInfo(' . $cur_uid . ')">' . "&#9195;" . '</span></a>' .
                         '<span class="sort_info" id="sort_info_message_' . $cur_uid . '" style="visibility: hidden">' . $user['sort_info'] . '</span>';
                 } ?>
                 <ul style="display: none;" id="stakes_user_<?= $cur_uid ?>"></ul>
-                <? $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "" ?>
             </li>
             <?
+            $next_li_class = $user['sort_info'] == "EQUAL" ? "skipped" : "";
         }
         break;
 }

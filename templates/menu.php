@@ -11,6 +11,10 @@ $menu[2]['title'] = 'Рейтинг участников';
 
 $menu[3]['url'] = '/rules.php';
 $menu[3]['title'] = 'Правила';
+
+$menu[4]['url'] = '/gloryhall.php';
+$menu[4]['title'] = 'Зал славы';
+
 ?>
 
 <div class="navbar">
