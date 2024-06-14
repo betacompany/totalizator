@@ -109,15 +109,15 @@ class User {
                 $data[$i]['user'] = $user;
                 $data[$i]['scores'] = $row['scores'];
                 $data[$i]['sort_info'] = "";
-                $this_scores = array(
+                $these_scores = array(
                     "score" => $row['scores'],
                     "4" => $row['count4'],
                     "3" => $row['count3'],
                     "2" => $row['count2'],
                     "1" => $row['count1']
                 );
-                if ($previous_user_score["score"] == $row['scores']) {
-                    foreach ($this_scores as $category => $value) {
+                if ($previous_user_score["score"] == $row['scores'] && $i > 0) {
+                    foreach ($these_scores as $category => $value) {
                         $prev_value = $previous_user_score[$category];
                         if ($value < $prev_value) {
                             $pts = $category == 1 ? "очку" : "очка";
@@ -128,7 +128,7 @@ class User {
                         }
                     }
                 }
-                $previous_user_score = $this_scores;
+                $previous_user_score = $these_scores;
                 $i++;
             } catch (Exception $e) {
             }
