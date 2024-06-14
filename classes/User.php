@@ -98,10 +98,10 @@ class User {
         $i = 0;
         $previous_user_score = array(
             "score" => 0,
-            "count4" => 0,
-            "count3" => 0,
-            "count2" => 0,
-            "count1" => 0
+            "4" => 0,
+            "3" => 0,
+            "2" => 0,
+            "1" => 0
         );
         while ($row = mysql_fetch_assoc($qwery)) {
             try {
