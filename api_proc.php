@@ -9,8 +9,26 @@ if ($_REQUEST['access_key'] != ACCESS_KEY) {
 
 require_once dirname(__FILE__) . '/classes/Match.php';
 require_once dirname(__FILE__) . '/classes/Competitor.php';
+require_once dirname(__FILE__) . '/classes/Stake.php';
 
 switch ($_REQUEST['action']) {
+    case 'end_ext_match':
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        try {
+            $match = Match::getByExtId($data['ext_id']);
+            $match->finish($data['score1'], $data['score2']);
+            $stakes = $match->getStakes();
+            foreach ($stakes as $stake) {
+                $stake->finish($match);
+            }
+            echo('OK ' . $data['score1'] . ':' . $data['score2']);
+        } catch (Exception $e) {
+            echo('Error: ' . $e->getMessage());
+        }
+
+    break;
+
     case 'import_ext_match':
         $data = json_decode(file_get_contents("php://input"), true);
         
