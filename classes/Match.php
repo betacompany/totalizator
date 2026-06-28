@@ -255,14 +255,6 @@ class Match {
 			`timestamp`=?', $comp_id, $comp1_id, $comp2_id, $datetime);
     }
 
-    public static function getByExtId($ext_id) {
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `ext_id`=?', $ext_id);
-        if ($match = mysql_fetch_assoc($req)) {
-            return new Match($match['id']);
-        }
-        throw new Exception('No match with ext_id=' . $ext_id, 0);
-    }
-
     public static function getOrCreateByExtId($comp_id, $comp1_id, $comp2_id, $ext_id, $datetime) {
         mysql_qw(
             'INSERT INTO `total_matches` SET
