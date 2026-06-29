@@ -152,6 +152,9 @@ class Match {
     }
 
     public function finish($score1, $score2) {
+        if ($this->played) {
+            throw new Exception('Match already finished: id=' . $this->id, 0);
+        }
         mysql_qw('UPDATE `total_matches` SET `score1`=?, `score2`=?, `played`=1 WHERE `id`=?', $score1, $score2, $this->getId());
         $this->score1 = $score1;
         $this->score2 = $score2;
