@@ -81,6 +81,7 @@ function loadMatches(type) {
                         .html(data)
                         .slideDown(speed, function () {
                             $('.top_m .btn.active').click();
+                            localizeMatchTimes();
                         });
                 })
         }
@@ -89,6 +90,18 @@ function loadMatches(type) {
 
 function refreshMatches() {
     loadMatches(selected);
+}
+
+function localizeMatchTimes() {
+    $('.utc-time').each(function () {
+        var utc = $(this).data('utc');
+        var d = new Date(utc + ' UTC');
+        var pad = function (n) { return n < 10 ? '0' + n : n; };
+        $(this).text(
+            pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear() +
+            ' в ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
+        );
+    });
 }
 
 function userClick(o, uid, comp_id) {

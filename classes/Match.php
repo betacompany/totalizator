@@ -134,6 +134,10 @@ class Match {
         return date('d/m/Y в H:i', strtotime($this->timestamp));
     }
 
+    public function getTimestamp() {
+        return $this->timestamp;
+    }
+
     public function makeStake($uid, $score1, $score2) {
         return Stake::make($uid, $this->getId(), $score1, $score2);
     }
