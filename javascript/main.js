@@ -94,13 +94,10 @@ function refreshMatches() {
 
 function localizeMatchTimes() {
     $('.utc-time').each(function () {
-        var utc = $(this).data('utc');
-        var d = new Date(utc + ' UTC');
-        var pad = function (n) { return n < 10 ? '0' + n : n; };
-        $(this).text(
-            pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear() +
-            ' в ' + pad(d.getHours()) + ':' + pad(d.getMinutes())
-        );
+        var d = new Date($(this).data('utc') + ' UTC');
+        var date = d.toLocaleDateString([], {day: '2-digit', month: '2-digit', year: 'numeric'});
+        var time = d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        $(this).text(date + ' в ' + time);
     });
 }
 
