@@ -135,7 +135,9 @@ class Match {
     }
 
     public function getTimestamp() {
-        return $this->timestamp;
+        // Unix time; strtotime() uses the same tz rules as isAvailable(), so the
+        // displayed time always matches the stake cutoff regardless of server tz
+        return strtotime($this->timestamp);
     }
 
     public function makeStake($uid, $score1, $score2) {
