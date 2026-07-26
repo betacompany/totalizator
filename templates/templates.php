@@ -25,7 +25,7 @@ function show_match(Match $match, $uid) {
             <?= $match->getName() ?>
             <small class="pull-right">
                 <?= $match->getCompName() ?>,
-                <?= $match->getTime() ?>
+                <span class="utc-time" data-utc="<?= $match->getTimestamp() ?>"><?= $match->getTime() ?></span>
                 (<?= $match->getId() ?>)
             </small>
         </h2>

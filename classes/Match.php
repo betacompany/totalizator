@@ -134,6 +134,12 @@ class Match {
         return date('d/m/Y в H:i', strtotime($this->timestamp));
     }
 
+    public function getTimestamp() {
+        // Unix time; strtotime() uses the same tz rules as isAvailable(), so the
+        // displayed time always matches the stake cutoff regardless of server tz
+        return strtotime($this->timestamp);
+    }
+
     public function makeStake($uid, $score1, $score2) {
         return Stake::make($uid, $this->getId(), $score1, $score2);
     }

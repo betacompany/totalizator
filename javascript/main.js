@@ -81,6 +81,7 @@ function loadMatches(type) {
                         .html(data)
                         .slideDown(speed, function () {
                             $('.top_m .btn.active').click();
+                            localizeMatchTimes();
                         });
                 })
         }
@@ -89,6 +90,19 @@ function loadMatches(type) {
 
 function refreshMatches() {
     loadMatches(selected);
+}
+
+function localizeMatchTimes() {
+    $('.utc-time').each(function () {
+        var ts = parseInt($(this).attr('data-utc'), 10);
+        if (isNaN(ts)) {
+            return;
+        }
+        var d = new Date(ts * 1000);
+        var date = d.toLocaleDateString('ru-RU', {day: '2-digit', month: '2-digit', year: 'numeric'});
+        var time = d.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'});
+        $(this).text(date + ' в ' + time);
+    });
 }
 
 function userClick(o, uid, comp_id) {
@@ -147,7 +161,9 @@ function loadStakesForUserFull(uid, comp_id) {
                 .slideUp(speed, function () {
                     $(this)
                         .html(data)
-                        .slideDown(speed);
+                        .slideDown(speed, function () {
+                            localizeMatchTimes();
+                        });
                 });
         }
     });
