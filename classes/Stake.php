@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/Match.php';
+require_once dirname(__FILE__) . '/TotalMatch.php';
 require_once dirname(__FILE__) . '/StakeCalculator.php';
 
 require_once dirname(__FILE__) . '/../lib/mysql.php';
@@ -101,7 +101,7 @@ class Stake {
         db_qw('UPDATE `total_stakes` SET `score`=?, `played`=1 WHERE `id`=?', $value, $this->getId());
     }
 
-    public function finish(Match $match) {
+    public function finish(TotalMatch $match) {
         $this->setScore(StakeCalculator::calculateScore(
             $match->getScore1(),
             $match->getScore2(),
@@ -112,7 +112,7 @@ class Stake {
 
     public static function make($uid, $match_id, $score1, $score2, $force = false) {
         try {
-            $match = new Match($match_id);
+            $match = new TotalMatch($match_id);
             if (!$match->isAvailableFor($uid) && !$force) {
                 throw new Exception('Такая ставка уже была сделана: match_id=' . $match_id, 0);
             }
@@ -161,7 +161,7 @@ class Stake {
         while ($stake = db_fetch_assoc($req)) {
             try {
                 $stake_o = new Stake($stake['id']);
-                $match = new Match($stake_o->getMatchId());
+                $match = new TotalMatch($stake_o->getMatchId());
                 if ($match->isAvailable()) {
                     $data[] = $stake_o;
                 }
@@ -179,7 +179,7 @@ class Stake {
         while ($stake = db_fetch_assoc($req)) {
             try {
                 $stake_o = new Stake($stake['id']);
-                $match = new Match($stake_o->getMatchId());
+                $match = new TotalMatch($stake_o->getMatchId());
                 if (!$match->isAvailable()) {
                     $data[] = $stake_o;
                 }

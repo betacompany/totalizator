@@ -9,11 +9,11 @@ require_once dirname(__FILE__) . '/../lib/mysql.php';
 define('AVAILABLE_TIME', 120);
 
 /**
- * Description of Match
+ * Description of TotalMatch
  *
  * @author ortemij
  */
-class Match {
+class TotalMatch {
     private $id;
     private $ext_id;
 
@@ -200,7 +200,7 @@ class Match {
         $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=0 ORDER BY `timestamp` ASC, `id` ASC');
         while ($match = db_fetch_assoc($req)) {
             try {
-                $m = new Match($match['id']);
+                $m = new TotalMatch($match['id']);
                 if (!$m->isAvailable()) {
                     $data[] = $m;
                 }
@@ -217,7 +217,7 @@ class Match {
         $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=0 ORDER BY `timestamp` ASC, `id` ASC');
         while ($match = db_fetch_assoc($req)) {
             try {
-                $m = new Match($match['id']);
+                $m = new TotalMatch($match['id']);
                 if ($m->isAvailable())
                     $data[] = $m;
             } catch (Exception $e) {
@@ -233,7 +233,7 @@ class Match {
         $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `timestamp` DESC, `id` ASC LIMIT ' . $limit);
         while ($match = db_fetch_assoc($req)) {
             try {
-                $data[] = new Match($match['id']);
+                $data[] = new TotalMatch($match['id']);
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -247,7 +247,7 @@ class Match {
         $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `id` ASC');
         while ($match = db_fetch_assoc($req)) {
             try {
-                $data[] = new Match($match['id']);
+                $data[] = new TotalMatch($match['id']);
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -267,7 +267,7 @@ class Match {
     public static function getByExtId($ext_id) {
         $req = db_qw('SELECT `id` FROM `total_matches` WHERE `ext_id`=?', $ext_id);
         if ($match = db_fetch_assoc($req)) {
-            return new Match($match['id']);
+            return new TotalMatch($match['id']);
         }
         throw new Exception('No match with ext_id=' . $ext_id, 0);
     }

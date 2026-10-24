@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/Match.php';
+require_once dirname(__FILE__) . '/TotalMatch.php';
 
 require_once dirname(__FILE__) . '/../lib/mysql.php';
 
@@ -36,7 +36,7 @@ class Competition {
         $req = db_qw('SELECT `id` FROM `total_matches` WHERE `comp_id`=? ORDER BY `id`', $this->getId());
         while ($match = db_fetch_assoc($req)) {
             try {
-                $data[] = new Match($match['id']);
+                $data[] = new TotalMatch($match['id']);
             } catch (Exception $e) {
             }
         }
