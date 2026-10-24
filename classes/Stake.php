@@ -25,8 +25,8 @@ class Stake {
     private $score;
 
     public function __construct($id) {
-        $req = mysql_qw('SELECT * FROM `total_stakes` WHERE `id`=?', $id);
-        if ($stake = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT * FROM `total_stakes` WHERE `id`=?', $id);
+        if ($stake = db_fetch_assoc($req)) {
             $this->id = $stake['id'];
             $this->uid = $stake['uid'];
             $this->match_id = $stake['match_id'];
@@ -86,7 +86,7 @@ class Stake {
             throw new Exception('Попытка изменить не свою ставку!', 0);
         }
 
-        mysql_qw('UPDATE `total_stakes` SET `stake_score1`=?, `stake_score2`=? WHERE `id`=?', $score1, $score2, getId());
+        db_qw('UPDATE `total_stakes` SET `stake_score1`=?, `stake_score2`=? WHERE `id`=?', $score1, $score2, getId());
     }
 
     public function remove($uid) {
@@ -94,11 +94,11 @@ class Stake {
             throw new Exception('Попытка удалить не свою ставку!', 0);
         }
 
-        mysql_qw('DELETE FROM `total_stakes` WHERE `id`=?', $this->getId());
+        db_qw('DELETE FROM `total_stakes` WHERE `id`=?', $this->getId());
     }
 
     private function setScore($value) {
-        mysql_qw('UPDATE `total_stakes` SET `score`=?, `played`=1 WHERE `id`=?', $value, $this->getId());
+        db_qw('UPDATE `total_stakes` SET `score`=?, `played`=1 WHERE `id`=?', $value, $this->getId());
     }
 
     public function finish(Match $match) {
@@ -120,7 +120,7 @@ class Stake {
             throw $e;
         }
 
-        mysql_qw('INSERT INTO `total_stakes` SET
+        db_qw('INSERT INTO `total_stakes` SET
 		    `uid`=?,
 		    `match_id`=?,
 		    `stake_score1`=?,
@@ -129,13 +129,13 @@ class Stake {
 		    `score`=0
 		 ', $uid, $match_id, $score1, $score2);
 
-        return mysql_insert_id();
+        return db_insert_id();
     }
 
     public static function getByMatchId($match_id) {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_stakes` WHERE `match_id`=?', $match_id);
-        while ($stake = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_stakes` WHERE `match_id`=?', $match_id);
+        while ($stake = db_fetch_assoc($req)) {
             try {
                 $data[] = new Stake($stake['id']);
             } catch (Exception $e) {
@@ -147,8 +147,8 @@ class Stake {
     }
 
     public static function getByMatchIdAndUID($match_id, $uid) {
-        $req = mysql_qw('SELECT `id` FROM `total_stakes` WHERE `match_id`=? and `uid`=?', $match_id, $uid);
-        if ($stake = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_stakes` WHERE `match_id`=? and `uid`=?', $match_id, $uid);
+        if ($stake = db_fetch_assoc($req)) {
             return new Stake($stake['id']);
         } else {
             return null;
@@ -157,8 +157,8 @@ class Stake {
 
     public static function getActiveFor($uid) {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_stakes` WHERE `played`=0 and `uid`=?', $uid);
-        while ($stake = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_stakes` WHERE `played`=0 and `uid`=?', $uid);
+        while ($stake = db_fetch_assoc($req)) {
             try {
                 $stake_o = new Stake($stake['id']);
                 $match = new Match($stake_o->getMatchId());
@@ -175,8 +175,8 @@ class Stake {
 
     public static function getWaitingFor($uid) {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_stakes` WHERE `played`=0 and `uid`=?', $uid);
-        while ($stake = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_stakes` WHERE `played`=0 and `uid`=?', $uid);
+        while ($stake = db_fetch_assoc($req)) {
             try {
                 $stake_o = new Stake($stake['id']);
                 $match = new Match($stake_o->getMatchId());
@@ -194,14 +194,14 @@ class Stake {
     public static function getPlayedFor($uid, $compId = 0) {
         $data = array();
         if ($compId == 0) {
-            $req = mysql_qw('SELECT `id` FROM `total_stakes` WHERE `played`=1 and `uid`=? ORDER BY `match_id` DESC', $uid);
+            $req = db_qw('SELECT `id` FROM `total_stakes` WHERE `played`=1 and `uid`=? ORDER BY `match_id` DESC', $uid);
         } else {
-            $req = mysql_qw('
+            $req = db_qw('
             SELECT `total_stakes`.`id` FROM
             (`total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id`)
             WHERE `total_stakes`.`played`=1 and `total_stakes`.`uid`=? and `total_matches`.`comp_id`=? ORDER BY `total_stakes`.`match_id` DESC', $uid, $compId);
         }
-        while ($stake = mysql_fetch_assoc($req)) {
+        while ($stake = db_fetch_assoc($req)) {
             try {
                 $data[] = new Stake($stake['id']);
             } catch (Exception $e) {

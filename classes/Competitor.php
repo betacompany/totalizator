@@ -18,8 +18,8 @@ class Competitor {
 
     public function __construct($data) {
         if (is_scalar($data)) {
-            $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $data);
-            if ($comp = mysql_fetch_assoc($req)) {
+            $req = db_qw('SELECT * FROM `total_competitors` WHERE `id`=?', $data);
+            if ($comp = db_fetch_assoc($req)) {
                 $this->id = $comp['id'];
                 $this->ext_id = $comp['ext_id'];
                 $this->name = $comp['name'];
@@ -47,8 +47,8 @@ class Competitor {
 
     public static function getAll() {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_competitors` WHERE 1=1 ORDER BY `name`');
-        while ($c = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_competitors` WHERE 1=1 ORDER BY `name`');
+        while ($c = db_fetch_assoc($req)) {
             try {
                 $data[] = new Competitor($c['id']);
             } catch (Exception $e) {
@@ -59,17 +59,17 @@ class Competitor {
     }
 
     public static function getOrCreateByExtId($ext_id, $name) {
-        $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `ext_id`=?', $ext_id);
-        if ($comp = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT * FROM `total_competitors` WHERE `ext_id`=?', $ext_id);
+        if ($comp = db_fetch_assoc($req)) {
             return new Competitor($comp);
         } else {
-            mysql_qw(
+            db_qw(
                 'INSERT INTO `total_competitors` SET `ext_id`=?, `name`=? ON DUPLICATE KEY UPDATE `name`=?',
                 $ext_id, $name, $name
             );
 
-            $req = mysql_qw('SELECT * FROM `total_competitors` WHERE `ext_id`=?', $ext_id);
-            if ($comp = mysql_fetch_assoc($req)) {
+            $req = db_qw('SELECT * FROM `total_competitors` WHERE `ext_id`=?', $ext_id);
+            if ($comp = db_fetch_assoc($req)) {
                 return new Competitor($comp);
             } else {
                 throw new Exception('Unable to create non-existing competitor for ext_id=' . $ext_id);

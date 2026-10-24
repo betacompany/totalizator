@@ -54,8 +54,8 @@ class User {
 
     public function getScores($comp_id = 0) {
         if ($comp_id != 0) {
-            $req = mysql_qw('SELECT SUM(`score`) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? AND `comp_id`=?', $this->getId(), $comp_id);
-            return mysql_result($req, 0, 'scores');
+            $req = db_qw('SELECT SUM(`score`) AS `scores` FROM `total_stakes` INNER JOIN `total_matches` ON `total_stakes`.`match_id`=`total_matches`.`id` WHERE `uid`=? AND `comp_id`=?', $this->getId(), $comp_id);
+            return db_result($req, 0, 'scores');
         }
 
         $sum = 0;
@@ -72,7 +72,7 @@ class User {
 
     public static function getAllByRating($comp_id = 0) {
         if ($comp_id == 0) {
-            $qwery = mysql_qw('SELECT `total_stakes`.`uid`,
+            $qwery = db_qw('SELECT `total_stakes`.`uid`,
               SUM(`total_stakes`.`score`) AS scores,
               SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
               SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
@@ -82,7 +82,7 @@ class User {
               GROUP BY uid
               ORDER BY scores DESC, count4 DESC, count3 DESC, count2 DESC, count1 DESC');
         } else {
-            $qwery = mysql_qw('SELECT `total_stakes`.`uid`,
+            $qwery = db_qw('SELECT `total_stakes`.`uid`,
               SUM(`total_stakes`.`score`) AS scores,
               SUM(IF(`total_stakes`.`score` = 4, 1, 0)) AS count4,
               SUM(IF(`total_stakes`.`score` = 3, 1, 0)) AS count3,
@@ -103,7 +103,7 @@ class User {
             "2" => 0,
             "1" => 0
         );
-        while ($row = mysql_fetch_assoc($qwery)) {
+        while ($row = db_fetch_assoc($qwery)) {
             try {
                 $user = new User($row['uid']);
                 $data[$i]['user'] = $user;
