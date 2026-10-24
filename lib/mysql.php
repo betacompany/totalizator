@@ -21,7 +21,12 @@ function db_link() {
 function db_qw() {
   $args = func_get_args();
   $query = call_user_func_array("db_make_qw", $args);
-  return mysqli_query(db_link(), $query);
+  $result = mysqli_query(db_link(), $query);
+  if ($result === false) {
+    // Callers only see false, so log why
+    error_log("db_qw: ".mysqli_error(db_link())." in: ".substr($query, 0, 500));
+  }
+  return $result;
 }
 
 function db_make_qw() {
