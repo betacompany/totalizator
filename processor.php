@@ -30,11 +30,11 @@ switch ($_REQUEST['action']) {
             $count = count($stakes);
             echo "<h6>$title ($count)</h6>";
             echo '<ul class="unstyled">';
-            $previousStakeScore = $stakes[0];
+            $previousStakeScore = null;
             foreach ($stakes as $stake) {
                 $mine = $stake->getUID() == userid();
                 $stakeScore = $stake->getStakeScore();
-                echo "<li class=\"" . ($stake->getType()) . "\" " . (strcmp($stakeScore, $previousStakeScore) != 0 ? "style=\"padding-top: 10px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                echo "<li class=\"" . ($stake->getType()) . "\" " . ($previousStakeScore !== null && strcmp($stakeScore, $previousStakeScore) != 0 ? "style=\"padding-top: 10px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
                 $previousStakeScore = $stakeScore;
             }
             echo '</ul></div>';
