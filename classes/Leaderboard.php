@@ -20,8 +20,8 @@ class Leaderboard {
         $this->id = $data['id'];
         $this->compId = $data['comp_id'];
         $this->finished = $data['finished'];
-        $req = mysql_qw('SELECT `uid` FROM `total_leaderboard_players` WHERE `lb_id`=?', $this->id);
-        while ($pl = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `uid` FROM `total_leaderboard_players` WHERE `lb_id`=?', $this->id);
+        while ($pl = db_fetch_assoc($req)) {
             $this->playerIdsHash[$pl['uid']] = true;
         }
     }
@@ -43,9 +43,9 @@ class Leaderboard {
     }
 
     public static function getByCompId($compId) {
-        $req = mysql_qw('SELECT * FROM `total_leaderboards` WHERE `comp_id`=?', $compId);
+        $req = db_qw('SELECT * FROM `total_leaderboards` WHERE `comp_id`=?', $compId);
         $leaderboards = array();
-        if ($lb = mysql_fetch_assoc($req)) {
+        if ($lb = db_fetch_assoc($req)) {
             return new Leaderboard($lb);
         } else {
             return null;
@@ -53,7 +53,7 @@ class Leaderboard {
     }
 
     public static function getGloryHall() {
-        $req = mysql_qw('SELECT uid, COUNT(*) as count FROM 
+        $req = db_qw('SELECT uid, COUNT(*) as count FROM 
                             `total_leaderboards` l 
                             JOIN `total_leaderboard_players` p 
                             ON l.id = p.lb_id 
@@ -61,7 +61,7 @@ class Leaderboard {
                          GROUP BY uid
                          ORDER BY count DESC');
         $data = array();
-        while ($row = mysql_fetch_assoc($req)) {
+        while ($row = db_fetch_assoc($req)) {
             $user = new User($row['uid']);
             $data[] = array(
                 'user' => $user,

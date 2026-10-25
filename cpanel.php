@@ -75,7 +75,7 @@ require_once dirname(__FILE__) . '/classes/Competitor.php';
 
     <select name="match_id">
         <?
-        $matches = Match::getActive();
+        $matches = TotalMatch::getActive();
         foreach ($matches as $match) {
         ?>
             <option value="<?= $match->getId() ?>"><?= $match->getName() ?></option>
@@ -97,7 +97,7 @@ require_once dirname(__FILE__) . '/classes/Competitor.php';
 
     <select name="match_id">
         <?
-        $matches = Match::getPlayed(100);
+        $matches = TotalMatch::getPlayed(100);
         foreach ($matches as $match) {
         ?>
             <option value="<?= $match->getId() ?>"><?= $match->getName() ?></option>

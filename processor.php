@@ -6,7 +6,7 @@ if (!accessTest()) {
     exit(0);
 }
 
-require_once dirname(__FILE__) . '/classes/Match.php';
+require_once dirname(__FILE__) . '/classes/TotalMatch.php';
 require_once dirname(__FILE__) . '/classes/Stake.php';
 require_once dirname(__FILE__) . '/classes/User.php';
 require_once dirname(__FILE__) . '/classes/Leaderboard.php';
@@ -15,7 +15,7 @@ require_once dirname(__FILE__) . '/templates/templates.php';
 switch ($_REQUEST['action']) {
     case 'make_stake':
         try {
-            $match = new Match($_REQUEST['match_id']);
+            $match = new TotalMatch($_REQUEST['match_id']);
             $match->makeStake(userid(), $_REQUEST['score1'], $_REQUEST['score2']);
             inner_menu($match, userid());
             exit(0);
@@ -30,11 +30,11 @@ switch ($_REQUEST['action']) {
             $count = count($stakes);
             echo "<h6>$title ($count)</h6>";
             echo '<ul class="unstyled">';
-            $previousStakeScore = $stakes[0];
+            $previousStakeScore = null;
             foreach ($stakes as $stake) {
                 $mine = $stake->getUID() == userid();
                 $stakeScore = $stake->getStakeScore();
-                echo "<li class=\"" . ($stake->getType()) . "\" " . (strcmp($stakeScore, $previousStakeScore) != 0 ? "style=\"padding-top: 10px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
+                echo "<li class=\"" . ($stake->getType()) . "\" " . ($previousStakeScore !== null && strcmp($stakeScore, $previousStakeScore) != 0 ? "style=\"padding-top: 10px;" : "") . "\">" . ($mine ? "<b>" : "") . username($stake->getUID()) . ': ' . $stakeScore . (($stake->isPlayed()) ? ' (' . $stake->getScore() . ')' : '') . ($mine ? "</b>" : "") . '</li>';
                 $previousStakeScore = $stakeScore;
             }
             echo '</ul></div>';
@@ -62,7 +62,7 @@ switch ($_REQUEST['action']) {
         }
 
         try {
-            $match = new Match($_REQUEST['match_id']);
+            $match = new TotalMatch($_REQUEST['match_id']);
             if (!$match->isAvailableFor(userid())) {
                 $stakes = Stake::getByMatchId($_REQUEST['match_id']);
                 echo '<div class="row-fluid">';
@@ -84,13 +84,13 @@ switch ($_REQUEST['action']) {
 
         switch ($_REQUEST['type']) {
             case 'available':
-                $matches = Match::getAvailable();
+                $matches = TotalMatch::getAvailable();
                 break;
             case 'active':
-                $matches = Match::getActive();
+                $matches = TotalMatch::getActive();
                 break;
             case 'played':
-                $matches = Match::getPlayed(20);
+                $matches = TotalMatch::getPlayed(20);
                 break;
         }
 
@@ -117,7 +117,7 @@ switch ($_REQUEST['action']) {
         $user = new User($_REQUEST['quid']);
         $stakes = $user->getPlayedStakes($_REQUEST['comp_id']);
         foreach ($stakes as $stake) {
-            $match = new Match($stake->getMatchId());
+            $match = new TotalMatch($stake->getMatchId());
             if (!isset($_REQUEST['full'])) {
                 echo '<li>' . $match->getName() . ':<br/><small>Счёт: ' . $match->getScore() . '; Ставка: ' . $stake->getStakeScore() . ' ' . (($stake->getScore() > 0) ? '<b>' : '') . '(' . $stake->getScore() . ')' . (($stake->getScore() > 0) ? '</b>' : '') . '</small></li>';
             } else {

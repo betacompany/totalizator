@@ -1,6 +1,6 @@
 <?php
 
-function show_match(Match $match, $uid) {
+function show_match(TotalMatch $match, $uid) {
     $stake = Stake::getByMatchIdAndUID($match->getId(), $uid);
     $withMy = $stake != null;
     $withoutMy = !$withMy;
@@ -40,7 +40,7 @@ function show_match(Match $match, $uid) {
 <?
 }
 
-function inner_menu(Match $match, $uid) {
+function inner_menu(TotalMatch $match, $uid) {
     $stake = Stake::getByMatchIdAndUID($match->getId(), $uid);
     ?>
     <? if ($match->isAvailableFor($uid)): ?>

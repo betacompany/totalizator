@@ -9,11 +9,11 @@ require_once dirname(__FILE__) . '/../lib/mysql.php';
 define('AVAILABLE_TIME', 120);
 
 /**
- * Description of Match
+ * Description of TotalMatch
  *
  * @author ortemij
  */
-class Match {
+class TotalMatch {
     private $id;
     private $ext_id;
 
@@ -32,8 +32,8 @@ class Match {
     private $comp_name = "undefined";
 
     public function __construct($id) {
-        $req = mysql_qw('SELECT * FROM `total_matches` WHERE `id`=?', $id);
-        if ($match = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT * FROM `total_matches` WHERE `id`=?', $id);
+        if ($match = db_fetch_assoc($req)) {
             $this->id = $match['id'];
             $this->ext_id = $match['ext_id'];
             $this->comp_id = $match['comp_id'];
@@ -81,8 +81,8 @@ class Match {
         if (!$this->isAvailable())
             return false;
 
-        $req = mysql_qw('SELECT `id` FROM `total_stakes` WHERE `uid`=? and `match_id`=?', $uid, $this->getId());
-        if ($match = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_stakes` WHERE `uid`=? and `match_id`=?', $uid, $this->getId());
+        if ($match = db_fetch_assoc($req)) {
             return false;
         }
 
@@ -161,7 +161,7 @@ class Match {
         if ($this->played) {
             throw new Exception('Match already finished: id=' . $this->id, 0);
         }
-        mysql_qw('UPDATE `total_matches` SET `score1`=?, `score2`=?, `played`=1 WHERE `id`=?', $score1, $score2, $this->getId());
+        db_qw('UPDATE `total_matches` SET `score1`=?, `score2`=?, `played`=1 WHERE `id`=?', $score1, $score2, $this->getId());
         $this->score1 = $score1;
         $this->score2 = $score2;
     }
@@ -197,10 +197,10 @@ class Match {
 
     public static function getActive() {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `played`=0 ORDER BY `timestamp` ASC, `id` ASC');
-        while ($match = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=0 ORDER BY `timestamp` ASC, `id` ASC');
+        while ($match = db_fetch_assoc($req)) {
             try {
-                $m = new Match($match['id']);
+                $m = new TotalMatch($match['id']);
                 if (!$m->isAvailable()) {
                     $data[] = $m;
                 }
@@ -214,10 +214,10 @@ class Match {
 
     public static function getAvailable() {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `played`=0 ORDER BY `timestamp` ASC, `id` ASC');
-        while ($match = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=0 ORDER BY `timestamp` ASC, `id` ASC');
+        while ($match = db_fetch_assoc($req)) {
             try {
-                $m = new Match($match['id']);
+                $m = new TotalMatch($match['id']);
                 if ($m->isAvailable())
                     $data[] = $m;
             } catch (Exception $e) {
@@ -230,10 +230,10 @@ class Match {
 
     public static function getPlayed($limit) {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `timestamp` DESC, `id` ASC LIMIT ' . $limit);
-        while ($match = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `timestamp` DESC, `id` ASC LIMIT ' . $limit);
+        while ($match = db_fetch_assoc($req)) {
             try {
-                $data[] = new Match($match['id']);
+                $data[] = new TotalMatch($match['id']);
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -244,10 +244,10 @@ class Match {
 
     public static function getAvailableFor($uid) {
         $data = array();
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `id` ASC');
-        while ($match = mysql_fetch_assoc($req)) {
+        $req = db_qw('SELECT `id` FROM `total_matches` WHERE `played`=1 ORDER BY `id` ASC');
+        while ($match = db_fetch_assoc($req)) {
             try {
-                $data[] = new Match($match['id']);
+                $data[] = new TotalMatch($match['id']);
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
@@ -257,7 +257,7 @@ class Match {
     }
 
     public static function create($comp_id, $comp1_id, $comp2_id, $datetime) {
-        mysql_qw('INSERT INTO `total_matches` SET
+        db_qw('INSERT INTO `total_matches` SET
 			`comp_id`=?,
 			`comp1_id`=?,
 			`comp2_id`=?,
@@ -265,15 +265,15 @@ class Match {
     }
 
     public static function getByExtId($ext_id) {
-        $req = mysql_qw('SELECT `id` FROM `total_matches` WHERE `ext_id`=?', $ext_id);
-        if ($match = mysql_fetch_assoc($req)) {
-            return new Match($match['id']);
+        $req = db_qw('SELECT `id` FROM `total_matches` WHERE `ext_id`=?', $ext_id);
+        if ($match = db_fetch_assoc($req)) {
+            return new TotalMatch($match['id']);
         }
         throw new Exception('No match with ext_id=' . $ext_id, 0);
     }
 
     public static function getOrCreateByExtId($comp_id, $comp1_id, $comp2_id, $ext_id, $datetime) {
-        mysql_qw(
+        db_qw(
             'INSERT INTO `total_matches` SET
                 `comp_id`=?,
                 `comp1_id`=?,

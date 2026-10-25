@@ -6,18 +6,18 @@ if (!accessTest() || !(userid() == 1 || userid() == 10 || userid() == 9 || useri
     exit(0);
 }
 
-require_once dirname(__FILE__) . '/classes/Match.php';
+require_once dirname(__FILE__) . '/classes/TotalMatch.php';
 require_once dirname(__FILE__) . '/classes/Stake.php';
 
 switch ($_REQUEST['action']) {
     case 'add_match':
         $datetime = $_REQUEST['date'] . ' ' . $_REQUEST['time'] . ':00';
-        Match::create($_REQUEST['comp_id'], $_REQUEST['comp1_id'], $_REQUEST['comp2_id'], $datetime);
+        TotalMatch::create($_REQUEST['comp_id'], $_REQUEST['comp1_id'], $_REQUEST['comp2_id'], $datetime);
         break;
 
     case 'end_match':
         try {
-            $match = new Match($_REQUEST['match_id']);
+            $match = new TotalMatch($_REQUEST['match_id']);
             $match->finish($_REQUEST['score1'], $_REQUEST['score2']);
             $stakes = $match->getStakes();
             foreach ($stakes as $stake) {
@@ -30,7 +30,7 @@ switch ($_REQUEST['action']) {
 
     case 'recalc_match':
         try {
-            $match = new Match($_REQUEST['match_id']);
+            $match = new TotalMatch($_REQUEST['match_id']);
             $stakes = $match->getStakes();
             foreach ($stakes as $stake) {
                 $stake->finish($match);

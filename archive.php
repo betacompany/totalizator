@@ -6,7 +6,7 @@ if (!accessTest()) {
     exit(0);
 }
 
-require_once dirname(__FILE__) . '/classes/Match.php';
+require_once dirname(__FILE__) . '/classes/TotalMatch.php';
 require_once dirname(__FILE__) . '/classes/Stake.php';
 require_once dirname(__FILE__) . '/templates/templates.php';
 

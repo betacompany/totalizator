@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../classes/StakeCalculator.php';
 
-class StakeCalculatorTest extends PHPUnit_Framework_TestCase {
+class StakeCalculatorTest extends \PHPUnit\Framework\TestCase {
 
     public function testResultCalculation() {
         $this->check(1, 0, 1, 0, 4);
