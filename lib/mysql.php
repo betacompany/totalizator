@@ -3,7 +3,7 @@
 /*
  * MySQL access through mysqli (ext/mysql is gone since PHP 7). The db_*
  * functions return what the ext/mysql functions they replaced did, e.g. false
- * rather than null. Must stay PHP 5.5 compatible until the server is upgraded.
+ * rather than null.
  */
 
 function db_link() {
